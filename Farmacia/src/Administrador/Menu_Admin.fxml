@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Administrador.Menu_AdminController">
+   <children>
+      <TabPane layoutY="79.0" prefHeight="477.0" prefWidth="781.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Reporte de ventas">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="414.0" prefWidth="724.0">
+                     <children>
+                        <TableView layoutX="24.0" layoutY="22.0" prefHeight="279.0" prefWidth="741.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <JFXButton layoutX="571.0" layoutY="350.0" prefHeight="32.0" prefWidth="192.0" style="-fx-background-color: #babdc4;" text="Generar reporte de ventas" textAlignment="CENTER" />
+                        <DatePicker layoutX="57.0" layoutY="355.0" />
+                        <DatePicker layoutX="292.0" layoutY="355.0" />
+                        <Label layoutX="57.0" layoutY="329.0" text="Fecha de inicio" />
+                        <Label layoutX="293.0" layoutY="329.0" text="Fecha de fin" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Proveedores">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="14.0" layoutY="91.0" prefHeight="269.0" prefWidth="751.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <JFXButton layoutX="73.0" layoutY="390.0" text="Agregar" />
+                        <JFXButton layoutX="168.0" layoutY="390.0" text="Modificar" />
+                        <JFXButton layoutX="272.0" layoutY="390.0" text="Eliminar" />
+                        <JFXButton layoutX="678.0" layoutY="38.0" text="Buscar" />
+                        <JFXTextField layoutX="14.0" layoutY="35.0" maxWidth="648.0" minWidth="604.0" prefHeight="31.0" prefWidth="604.0" promptText="RFC del proveedor" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Registro  de vendedores">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="14.0" layoutY="71.0" prefHeight="275.0" prefWidth="749.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <JFXButton layoutX="50.0" layoutY="381.0" />
+                        <JFXButton layoutX="129.0" layoutY="381.0" />
+                        <JFXButton layoutX="223.0" layoutY="381.0" />
+                        <JFXTextField layoutX="15.0" layoutY="25.0" maxWidth="575.0" minWidth="322.0" prefHeight="31.0" prefWidth="575.0" promptText="Nombre del vendedor" unFocusColor="BLACK" />
+                        <JFXButton layoutX="638.0" layoutY="28.0" text="Buscar" />
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Registro de producto">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXTextField layoutX="40.0" layoutY="69.0" promptText="Nombre del producto" />
+                        <JFXComboBox layoutX="447.0" layoutY="74.0" prefHeight="25.0" prefWidth="161.0" promptText="Proveedor" />
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Pane layoutY="1.0" prefHeight="78.0" prefWidth="781.0" style="-fx-background-color: #babdc4;">
+         <children>
+            <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="663.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="421.0" layoutY="36.0" text="Nombre de usuario " />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
