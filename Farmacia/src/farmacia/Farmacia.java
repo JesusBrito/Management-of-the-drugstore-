@@ -19,7 +19,7 @@ public class Farmacia extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
         
         Scene scene = new Scene(root);
         
