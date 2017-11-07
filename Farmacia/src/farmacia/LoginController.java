@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package farmacia;
 
 import java.net.URL;
@@ -10,23 +5,81 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import java.sql.*;
+import Utilidades.Bd;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 /**
  *
  * @author jesus
  */
 public class LoginController implements Initializable {
+    String Usuario="";
+    String Contrasenia="";
+    int contadorInicio=1;
+    @FXML
+    private JFXTextField txtUsuario;
+    @FXML
+    private JFXPasswordField txtContrasenia;
+    @FXML
+    private JFXButton btnIniciar;
     
     @FXML
-    private Label label;
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void handleButtonAction(ActionEvent event) throws IOException {
+       Bd base = new Bd();
+       
+       Usuario=txtUsuario.getText();
+       Contrasenia=txtContrasenia.getText();
+       
+       Connection conector =base.Conectar(Usuario, Contrasenia);
+       
+       if(conector!=null){
+           System.out.println("Exitoso");
+           Notifications notificationsBuilder = Notifications.create()
+            .title("Bienvenido "+Usuario)           
+            .text("Que tenga un excelente día :)")
+            .hideAfter(Duration.seconds(4))
+            .position(Pos.TOP_RIGHT);
+            notificationsBuilder.showConfirm();
+            
+            Parent root = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("Bienvenido");
+            stage.setScene(new Scene(root));
+            
+       }else{
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error al Iniciar sesion");
+            alert.setContentText("Usuario y/o contraseña incorrectos");
+            alert.showAndWait();
+            contadorInicio++;
+            if (contadorInicio>3) {
+                Alert alert2 = new Alert(Alert.AlertType.WARNING);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("Limite de intentos superado");
+                alert2.setContentText("El numero de intentos para iniciar sesión ha sido superado,\n por favor contacta con el administrador del sistema :)");
+                alert2.showAndWait();
+                txtUsuario.setDisable(true);
+                txtContrasenia.setDisable(true);
+                btnIniciar.setDisable(true);
+            }
+       }
     }
-    
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

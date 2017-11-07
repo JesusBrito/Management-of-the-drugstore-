@@ -12,9 +12,9 @@
 <AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="320" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.LoginController">
    <children>
       <Label layoutX="128.0" layoutY="39.0" text="Bienvenido" />
-      <JFXButton buttonType="RAISED" layoutX="133.0" layoutY="225.0" ripplerFill="BLACK" style="-fx-background-color: #346ac1;" text="Login" textFill="WHITE">
+      <JFXButton fx:id="btnIniciar" buttonType="RAISED" layoutX="133.0" layoutY="225.0" onAction="#handleButtonAction" ripplerFill="BLACK" style="-fx-background-color: #346ac1;" text="Login" textFill="WHITE">
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
       </JFXButton>
       <JFXTextField fx:id="txtUsuario" labelFloat="true" layoutX="58.0" layoutY="105.0" maxWidth="220.0" minWidth="220.0" prefHeight="31.0" prefWidth="220.0" promptText="Usuario" unFocusColor="BLACK" />

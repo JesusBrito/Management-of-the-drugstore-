@@ -23,8 +23,8 @@
                           </columns>
                         </TableView>
                         <JFXButton layoutX="571.0" layoutY="350.0" prefHeight="32.0" prefWidth="192.0" style="-fx-background-color: #babdc4;" text="Generar reporte de ventas" textAlignment="CENTER" />
-                        <DatePicker layoutX="57.0" layoutY="355.0" />
-                        <DatePicker layoutX="292.0" layoutY="355.0" />
+                        <JFXDatePicker layoutX="57.0" layoutY="355.0" />
+                        <JFXDatePicker layoutX="292.0" layoutY="355.0" />
                         <Label layoutX="57.0" layoutY="329.0" text="Fecha de inicio" />
                         <Label layoutX="293.0" layoutY="329.0" text="Fecha de fin" />
                      </children></AnchorPane>
