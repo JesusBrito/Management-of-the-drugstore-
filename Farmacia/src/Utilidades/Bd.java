@@ -32,8 +32,5 @@ public class Bd {
     
     public void ConsultarUsuario(){
         
-    }
-    
-    
-            
+    }        
 }
