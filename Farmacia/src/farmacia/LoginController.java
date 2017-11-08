@@ -38,7 +38,7 @@ public class LoginController implements Initializable {
     private JFXButton btnIniciar;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException {
+    private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
        Bd base = new Bd();
        
        Usuario=txtUsuario.getText();
@@ -47,6 +47,9 @@ public class LoginController implements Initializable {
        Connection conector =base.Conectar(Usuario, Contrasenia);
        
        if(conector!=null){
+           
+           //base.ConsultarUsuario();
+           
            System.out.println("Exitoso");
            Notifications notificationsBuilder = Notifications.create()
             .title("Bienvenido "+Usuario)           
