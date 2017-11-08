@@ -1,4 +1,4 @@
-package Utilidades;
+package farmacia.Utilidades;
 
 import java.sql.*;
 

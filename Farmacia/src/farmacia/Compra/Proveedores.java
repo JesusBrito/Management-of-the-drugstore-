@@ -1,8 +1,8 @@
-package Compra;
+package farmacia.Compra;
 
 
 
-public class Proveedores extends Utilidades.Persona {
+public class Proveedores extends farmacia.Utilidades.Persona {
     String Telefono;
     String NombreEmpresa;
 

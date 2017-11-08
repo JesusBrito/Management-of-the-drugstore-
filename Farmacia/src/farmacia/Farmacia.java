@@ -6,7 +6,6 @@ package farmacia;
  * and open the template in the editor.
  */
 
-import Administrador.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

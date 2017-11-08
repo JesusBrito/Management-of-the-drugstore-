@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Administrador.Menu_AdminController">
+<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.Administrador.Menu_AdminController">
    <children>
       <TabPane layoutY="79.0" prefHeight="477.0" prefWidth="781.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>

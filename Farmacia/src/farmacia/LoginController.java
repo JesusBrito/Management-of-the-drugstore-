@@ -1,12 +1,11 @@
 package farmacia;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.sql.*;
-import Utilidades.Bd;
+import farmacia.Utilidades.Bd;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -17,7 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -58,10 +56,10 @@ public class LoginController implements Initializable {
                      .position(Pos.TOP_RIGHT);
                      notificationsBuilderVended.showConfirm();
 
-                     Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
-                     Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                     stage.setTitle("Bienvenido");
-                     stage.setScene(new Scene(root));
+                    Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
+                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    stage.setTitle("Bienvenido");
+                    stage.setScene(new Scene(root));
                     break;
                 case "ADMINISTRADOR":
                     System.out.println("Exitoso");
@@ -70,7 +68,7 @@ public class LoginController implements Initializable {
                      .text("Que tenga un excelente día :)")
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
-                     notificationsBuilderAdmin.showConfirm();
+                    notificationsBuilderAdmin.showConfirm();
 
                     Parent Admin = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
                     Stage stageAdmin = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -90,7 +88,7 @@ public class LoginController implements Initializable {
                     Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stageAlm.setTitle("Bienvenido");
                     stageAlm.setScene(new Scene(Alm));    
-                     break;
+                    break;
                 default:
                     System.out.println("Exitoso");
                     Notifications notificationsBuilderDefault = Notifications.create()
@@ -98,13 +96,13 @@ public class LoginController implements Initializable {
                      .text("Hubo un error, el usuario no esta registrado favor de consultar a su administrador :)")
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
-                     notificationsBuilderDefault.showError();
+                    notificationsBuilderDefault.showError();
                     break;
            }            
        }else{
            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Error al Iniciar sesion");
+            alert.setHeaderText("Error al Iniciar sesión");
             alert.setContentText("Usuario y/o contraseña incorrectos");
             alert.showAndWait();
             contadorInicio++;
@@ -112,7 +110,7 @@ public class LoginController implements Initializable {
                 Alert alert2 = new Alert(Alert.AlertType.WARNING);
                 alert2.setTitle("Error");
                 alert2.setHeaderText("Limite de intentos superado");
-                alert2.setContentText("El numero de intentos para iniciar sesión ha sido superado,\n por favor contacta con el administrador del sistema :)");
+                alert2.setContentText("El número de intentos para iniciar sesión ha sido superado,\n por favor contacta con el administrador del sistema :)");
                 alert2.showAndWait();
                 txtUsuario.setDisable(true);
                 txtContrasenia.setDisable(true);

@@ -1,7 +1,7 @@
 
-package Venta;
+package farmacia.Venta;
 
-public class Clientes extends Utilidades.Persona {
+public class Clientes extends farmacia.Utilidades.Persona {
     private String Correo;
     
     public Clientes(){}

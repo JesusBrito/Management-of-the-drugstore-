@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Administrador;
+package farmacia.Almacen;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author jesus
  */
-public class Menu_AdminController implements Initializable {
+public class InventarioController implements Initializable {
 
     /**
      * Initializes the controller class.
