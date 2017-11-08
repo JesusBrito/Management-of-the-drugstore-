@@ -1,4 +1,4 @@
-package Venta;
+package farmacia;
 
 import java.net.URL;
 import java.util.ResourceBundle;

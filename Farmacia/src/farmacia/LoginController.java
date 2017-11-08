@@ -40,29 +40,67 @@ public class LoginController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
        Bd base = new Bd();
-       
+       String usuario="";
        Usuario=txtUsuario.getText();
        Contrasenia=txtContrasenia.getText();
-       
        Connection conector =base.Conectar(Usuario, Contrasenia);
-       
        if(conector!=null){
-           
-           //base.ConsultarUsuario();
-           
-           System.out.println("Exitoso");
-           Notifications notificationsBuilder = Notifications.create()
-            .title("Bienvenido "+Usuario)           
-            .text("Que tenga un excelente día :)")
-            .hideAfter(Duration.seconds(4))
-            .position(Pos.TOP_RIGHT);
-            notificationsBuilder.showConfirm();
-            
-            Parent root = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setTitle("Bienvenido");
-            stage.setScene(new Scene(root));
-            
+           usuario=base.ConsultarUsuario();
+           base.cerrarConexion();
+           System.out.println(usuario);
+           switch(usuario){
+                case "VENDEDOR":
+                    System.out.println("Exitoso");
+                    Notifications notificationsBuilderVended = Notifications.create()
+                     .title("Bienvenido "+Usuario)           
+                     .text("Que tenga un excelente día :)")
+                     .hideAfter(Duration.seconds(4))
+                     .position(Pos.TOP_RIGHT);
+                     notificationsBuilderVended.showConfirm();
+
+                     Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
+                     Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                     stage.setTitle("Bienvenido");
+                     stage.setScene(new Scene(root));
+                    break;
+                case "ADMINISTRADOR":
+                    System.out.println("Exitoso");
+                    Notifications notificationsBuilderAdmin = Notifications.create()
+                     .title("Bienvenido "+Usuario)           
+                     .text("Que tenga un excelente día :)")
+                     .hideAfter(Duration.seconds(4))
+                     .position(Pos.TOP_RIGHT);
+                     notificationsBuilderAdmin.showConfirm();
+
+                    Parent Admin = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
+                    Stage stageAdmin = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    stageAdmin.setTitle("Bienvenido");
+                    stageAdmin.setScene(new Scene(Admin));    
+                    break;
+                case "ALMACEN":
+                    System.out.println("Exitoso");
+                    Notifications notificationsBuilderAlmacen = Notifications.create()
+                     .title("Bienvenido "+Usuario)           
+                     .text("Que tenga un excelente día :)")
+                     .hideAfter(Duration.seconds(4))
+                     .position(Pos.TOP_RIGHT);
+                     notificationsBuilderAlmacen.showConfirm();
+
+                    Parent Alm = FXMLLoader.load(getClass().getResource("Menu_Almacen.fxml"));
+                    Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    stageAlm.setTitle("Bienvenido");
+                    stageAlm.setScene(new Scene(Alm));    
+                     break;
+                default:
+                    System.out.println("Exitoso");
+                    Notifications notificationsBuilderDefault = Notifications.create()
+                     .title("¡Error!")           
+                     .text("Hubo un error, el usuario no esta registrado favor de consultar a su administrador :)")
+                     .hideAfter(Duration.seconds(4))
+                     .position(Pos.TOP_RIGHT);
+                     notificationsBuilderDefault.showError();
+                    break;
+           }            
        }else{
            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -82,7 +120,6 @@ public class LoginController implements Initializable {
             }
        }
     }
- 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

@@ -30,19 +30,20 @@ public class Bd {
         return conexion;
     }
     
-    public void ConsultarUsuario() throws SQLException{
-         String query = "SELECT username, granted_role from user_role_privs;";     
-            
+    public String ConsultarUsuario() throws SQLException{
+        String usuario="";
+        String query = "SELECT username, granted_role from user_role_privs";         
         try {
             PreparedStatement stmt = conexion.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                System.out.println("Salida: "+ rs.getString("username")+" "+ rs.getString("granted_role")); 
+               usuario=rs.getString("granted_role"); 
             }
         } catch (SQLException se) {
             //se.printStackTrace();
             throw new SQLException("Error finding department in DAO", se);
-        } 
+        }
+        return usuario;
     }
     public void cerrarConexion() throws SQLException{
         conexion.close();
