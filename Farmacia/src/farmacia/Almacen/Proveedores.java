@@ -1,4 +1,4 @@
-package farmacia.Compra;
+package farmacia.Almacen;
 
 
 

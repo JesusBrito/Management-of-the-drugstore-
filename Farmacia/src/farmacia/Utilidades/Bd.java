@@ -29,7 +29,6 @@ public class Bd {
         }
         return conexion;
     }
-    
     public String ConsultarUsuario() throws SQLException{
         String usuario="";
         String query = "SELECT username, granted_role from user_role_privs";         
