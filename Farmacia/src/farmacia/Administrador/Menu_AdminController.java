@@ -7,7 +7,6 @@ package farmacia.Administrador;
 
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Utilidades.Bd;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,10 +19,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -34,14 +31,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
  //AnchorPane Eventos
 
 
-public class Menu_AdminController implements Initializable {
+public class Menu_AdminController implements Initializable, Runnable {
 
     /**
      * Initializes the controller class.
      */
-    String UsuarioBD="asd", PasswordBD="asd";
-    @FXML private TableView<Proveedores> tvProveedores;
+            
     
+    String UsuarioBD="asd", PasswordBD="asd";
+    //==============TABLA DE PROVEEDORES==============    
+    @FXML private TableView<Proveedores> tvProveedores;
     @FXML private TableColumn<Proveedores, String> colRFC;
     @FXML private TableColumn<Proveedores, String> colProv;
     @FXML private TableColumn<Proveedores, String> colapPaterno;
@@ -57,17 +56,32 @@ public class Menu_AdminController implements Initializable {
     
     @FXML private JFXTextField txtRrfProv;
     
-     
     ObservableList<Proveedores> dataProveedores = FXCollections.observableArrayList();
     ArrayList<String[]> proveedor = new ArrayList<>();
     
-
+     //==============TABLA DE REPORTE DE VENTAS==============
+    @FXML private TableView<Ventas> tvVentas;
+    
+    @FXML private TableColumn<Ventas, String> colRfc;
+    @FXML private TableColumn<Ventas, String> colNota;
+    @FXML private TableColumn<Ventas, String> colFecha;
+    @FXML private TableColumn<Ventas, String> colNombre;
+    @FXML private TableColumn<Ventas, String> colPaterno;
+    @FXML private TableColumn<Ventas, String> colMaterno;
+    @FXML private TableColumn<Ventas, String> colTotal;
+    
+    
+    ObservableList<Ventas> dataVentas = FXCollections.observableArrayList();
+    ArrayList<String[]> venta = new ArrayList<>();
+    
+    
+    
     public void setCredenciales(String usr, String pass){
        this.UsuarioBD=usr;
        this.PasswordBD=pass;
     }
 
-    public void actualizarTablaProveedores(){
+    public void LlenarTablaProveedores(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         colRFC.setCellValueFactory(cellData -> cellData.getValue().rfc());
         colProv.setCellValueFactory(cellData -> cellData.getValue().nombreEmpresa());
@@ -84,7 +98,7 @@ public class Menu_AdminController implements Initializable {
         tvProveedores.setItems(dataProveedores);
     }
     
-    public void actualizarBDProveedores() throws SQLException, ParseException, IOException{
+    public void ObtenerDatosProveedores() throws SQLException, ParseException, IOException{
         //Se llena la colección "dataClientes" en base a la base de datos.
         dataProveedores.clear();
         Bd db = new Bd();
@@ -109,15 +123,55 @@ public class Menu_AdminController implements Initializable {
             ));
         }
         db.cerrarConexion();
-        actualizarTablaProveedores();
+        LlenarTablaProveedores();
+    }
+    
+    public void LlenarTablaVentas (){
+        colRfc.setCellValueFactory(cellData -> cellData.getValue().Rfc);
+        colNota.setCellValueFactory(cellData -> cellData.getValue().NoNota);
+        colNombre.setCellValueFactory(cellData -> cellData.getValue().Nombre);
+        colPaterno.setCellValueFactory(cellData -> cellData.getValue().ApPaterno);
+        colMaterno.setCellValueFactory(cellData -> cellData.getValue().ApMaterno);
+        colFecha.setCellValueFactory(cellData -> cellData.getValue().Fecha);
+        colTotal.setCellValueFactory(cellData -> cellData.getValue().Total);
+        tvVentas.setItems(dataVentas);
+    }
+    
+ 
+    
+    public void ObtenerDatosVentas() throws SQLException, ParseException, IOException{
+        //Se llena la colección "dataClientes" en base a la base de datos.
+        dataVentas.clear();
+        Bd db = new Bd();
+        db.Conectar("administrador1", "12345");
+        venta = db.Seleccionar("SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, \n" +
+                               "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA \n" +
+                               "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC");
+        System.out.println("total "+venta.get(1)[6]);
+        
+        for (int i=0; i<=venta.size()-1; i++){
+            dataVentas.addAll( new Ventas(
+                    venta.get(i)[0], //id
+                    venta.get(i)[1],
+                    venta.get(i)[2],//correo
+                    venta.get(i)[3],//telefono
+                    venta.get(i)[4],//tratamiento
+                    venta.get(i)[5],//empresa
+                    venta.get(i)[6]//país
+            ));
+        }
+        db.cerrarConexion();
+        LlenarTablaVentas();
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)  {
         
         System.out.println(this.UsuarioBD+","+this.PasswordBD);
         try {
-             actualizarBDProveedores();
+            ObtenerDatosProveedores();
+            ObtenerDatosVentas();
+             
          } catch (SQLException ex) {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          } catch (ParseException ex) {
@@ -126,5 +180,10 @@ public class Menu_AdminController implements Initializable {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          }   
     }    
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
