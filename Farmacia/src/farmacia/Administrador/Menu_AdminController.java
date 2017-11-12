@@ -1,24 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package farmacia.Administrador;
 
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Utilidades.Bd;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -37,6 +37,10 @@ public class Menu_AdminController implements Initializable {
      * Initializes the controller class.
      */
     String UsuarioBD="asd", PasswordBD="asd";
+    String Query="";
+    String fechaInicio="";
+    String fechaFin="";
+    String pattern="";
     //==============TABLA DE PROVEEDORES==============    
     @FXML private TableView<Proveedores> tvProveedores;
     @FXML private TableColumn<Proveedores, String> colRFC;
@@ -68,11 +72,43 @@ public class Menu_AdminController implements Initializable {
     @FXML private TableColumn<Ventas, String> colMaterno;
     @FXML private TableColumn<Ventas, String> colTotal;
     
-    
     ObservableList<Ventas> dataVentas = FXCollections.observableArrayList();
     ArrayList<String[]> venta = new ArrayList<>();
     
+    //==============REPORTE DE VENTAS==============
+    @FXML private JFXDatePicker dateIni;
+    @FXML private JFXDatePicker dateFin;
     
+    @FXML
+    public void btnGenerarReporteClicked(ActionEvent event) throws IOException, SQLException, ParseException {      
+
+        LocalDate fechaI = dateIni.getValue();
+        LocalDate fechaF = dateFin.getValue();
+        LocalDate hoy = LocalDate.now();
+        if (fechaI==null||fechaF==null) {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setTitle("Error");
+           alert.setHeaderText("Error en las fechas");
+           alert.setContentText("Debe elejir la fecha de inicio\n y la fecha de fin");
+           alert.showAndWait();        
+        }else{
+            DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
+            String fechaInicio  = fechaI.format(formatters);
+            String fechaFin  = fechaF.format(formatters);
+
+            Query="SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, "
+                    + "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA "
+                    + "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC "
+                    + "WHERE ELENA.VENTA_MEDICAMENTOS.FECHA Between TO_DATE('"+fechaInicio+"') and TO_DATE('"+fechaFin+"')";
+            ObtenerDatosVentas(Query);
+        }
+    }
+    //==============BUSQUEDA DE PROVEEDORES==============
+    public void btnBuscarProveedorClicked(ActionEvent event) throws IOException, SQLException, ParseException { 
+        String RFC= txtRrfProv.getText();
+        Query=("SELECT * FROM ELENA.PROVEEDORES WHERE RFC='"+RFC+"'");
+            ObtenerDatosProveedores(Query);
+    }
     
     public void setCredenciales(String usr, String pass){
        this.UsuarioBD=usr;
@@ -96,12 +132,12 @@ public class Menu_AdminController implements Initializable {
         tvProveedores.setItems(dataProveedores);
     }
     
-    public void ObtenerDatosProveedores() throws SQLException, ParseException, IOException{
-        //Se llena la colección "dataClientes" en base a la base de datos.
+    public void ObtenerDatosProveedores(String Query) throws SQLException, ParseException, IOException{
+        //Se llena la colección "dataProveedores" en base a la base de datos.
         dataProveedores.clear();
         Bd db = new Bd();
         db.Conectar("administrador1", "12345");
-        proveedor = db.Seleccionar("SELECT * FROM ELENA.PROVEEDORES");        
+        proveedor = db.Seleccionar(Query);        
         for (int i=0; i<=proveedor.size()-1; i++){
             dataProveedores.addAll( new Proveedores(
                     proveedor.get(i)[0], //id
@@ -133,14 +169,12 @@ public class Menu_AdminController implements Initializable {
         tvVentas.setItems(dataVentas);
     }
     
-    public void ObtenerDatosVentas() throws SQLException, ParseException, IOException{
-        //Se llena la colección "dataClientes" en base a la base de datos.
+    public void ObtenerDatosVentas(String Query) throws SQLException, ParseException, IOException{
+        //Se llena la colección "dataVentas" en base a la base de datos.
         dataVentas.clear();
         Bd db = new Bd();
         db.Conectar("administrador1", "12345");
-        venta = db.Seleccionar("SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, \n" +
-                               "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA \n" +
-                               "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC");        
+        venta = db.Seleccionar(Query);        
         for (int i=0; i<=venta.size()-1; i++){
             dataVentas.addAll( new Ventas(
                     venta.get(i)[0], //id
@@ -158,9 +192,14 @@ public class Menu_AdminController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         try {
-             ObtenerDatosProveedores();
-             ObtenerDatosVentas();
+            Query="SELECT * FROM ELENA.PROVEEDORES";
+            ObtenerDatosProveedores(Query);
+            Query= "SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, \n" +
+                               "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA \n" +
+                               "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC";
+            ObtenerDatosVentas(Query);
          } catch (SQLException ex) {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          } catch (ParseException ex) {
