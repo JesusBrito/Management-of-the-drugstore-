@@ -45,9 +45,7 @@ public class LoginController implements Initializable {
        Contrasenia=txtContrasenia.getText();
        Connection conector =base.Conectar(Usuario, Contrasenia);
        if(conector!=null){
-           tipoUsuario=base.ConsultarUsuario();
-           System.out.println(tipoUsuario);
-           
+           tipoUsuario=base.ConsultarUsuario();          
            Menu_AdminController admc= new Menu_AdminController();
            admc.setCredenciales(txtUsuario.getText(),txtContrasenia.getText());
            

@@ -31,13 +31,11 @@ import javafx.scene.control.TableView;
  //AnchorPane Eventos
 
 
-public class Menu_AdminController implements Initializable, Runnable {
+public class Menu_AdminController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
-            
-    
     String UsuarioBD="asd", PasswordBD="asd";
     //==============TABLA DE PROVEEDORES==============    
     @FXML private TableView<Proveedores> tvProveedores;
@@ -103,9 +101,7 @@ public class Menu_AdminController implements Initializable, Runnable {
         dataProveedores.clear();
         Bd db = new Bd();
         db.Conectar("administrador1", "12345");
-        proveedor = db.Seleccionar("SELECT * FROM ELENA.PROVEEDORES");
-        System.out.println(proveedor.size());
-        
+        proveedor = db.Seleccionar("SELECT * FROM ELENA.PROVEEDORES");        
         for (int i=0; i<=proveedor.size()-1; i++){
             dataProveedores.addAll( new Proveedores(
                     proveedor.get(i)[0], //id
@@ -126,7 +122,7 @@ public class Menu_AdminController implements Initializable, Runnable {
         LlenarTablaProveedores();
     }
     
-    public void LlenarTablaVentas (){
+    public void LlenarTablaVentas(){
         colRfc.setCellValueFactory(cellData -> cellData.getValue().Rfc);
         colNota.setCellValueFactory(cellData -> cellData.getValue().NoNota);
         colNombre.setCellValueFactory(cellData -> cellData.getValue().Nombre);
@@ -137,8 +133,6 @@ public class Menu_AdminController implements Initializable, Runnable {
         tvVentas.setItems(dataVentas);
     }
     
- 
-    
     public void ObtenerDatosVentas() throws SQLException, ParseException, IOException{
         //Se llena la colección "dataClientes" en base a la base de datos.
         dataVentas.clear();
@@ -146,9 +140,7 @@ public class Menu_AdminController implements Initializable, Runnable {
         db.Conectar("administrador1", "12345");
         venta = db.Seleccionar("SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, \n" +
                                "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA \n" +
-                               "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC");
-        System.out.println("total "+venta.get(1)[6]);
-        
+                               "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC");        
         for (int i=0; i<=venta.size()-1; i++){
             dataVentas.addAll( new Ventas(
                     venta.get(i)[0], //id
@@ -165,13 +157,10 @@ public class Menu_AdminController implements Initializable, Runnable {
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb)  {
-        
-        System.out.println(this.UsuarioBD+","+this.PasswordBD);
+    public void initialize(URL url, ResourceBundle rb) {
         try {
-            ObtenerDatosProveedores();
-            ObtenerDatosVentas();
-             
+             ObtenerDatosProveedores();
+             ObtenerDatosVentas();
          } catch (SQLException ex) {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          } catch (ParseException ex) {
@@ -179,11 +168,5 @@ public class Menu_AdminController implements Initializable, Runnable {
          } catch (IOException ex) {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          }   
-    }    
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }      
 }
