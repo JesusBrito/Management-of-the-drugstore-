@@ -4,6 +4,7 @@ package farmacia.Venta;
 public class Clientes extends farmacia.Utilidades.Persona {
     private String Correo;
     
+    /*
     public Clientes(){}
     public Clientes(String rfc,String nombre, String apPaterno, String apMaterno, String calle, String colonia , int numero,
             String ciudad, String delegacion, int cp, String correo){
@@ -52,6 +53,7 @@ public class Clientes extends farmacia.Utilidades.Persona {
     public String Correo() {
         return this.Correo;
     }
+*/
 }
 
 

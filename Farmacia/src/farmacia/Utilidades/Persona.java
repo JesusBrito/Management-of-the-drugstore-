@@ -5,19 +5,23 @@
  */
 package farmacia.Utilidades;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author jesus
  */
 public class Persona {
-    protected String RFC;
-    protected String Nombre;
-    protected String ApPaterno;
-    protected String ApMaterno;
-    protected String Calle;
-    protected String Colonia;
-    protected Integer Numero;
-    protected String Ciudad;
-    protected String Delegacion;
-    protected Integer Cp;
+    protected StringProperty RFC;
+    protected StringProperty Nombre;
+    protected StringProperty ApPaterno;
+    protected StringProperty ApMaterno;
+    protected StringProperty Calle;
+    protected StringProperty Colonia;
+    protected StringProperty Numero;
+    protected StringProperty Ciudad;
+    protected StringProperty Delegacion;
+    protected StringProperty Cp;
 }

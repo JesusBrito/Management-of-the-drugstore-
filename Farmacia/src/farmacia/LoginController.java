@@ -10,6 +10,7 @@ import farmacia.Utilidades.Bd;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import farmacia.Administrador.Menu_AdminController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -39,15 +40,19 @@ public class LoginController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
        Bd base = new Bd();
-       String usuario="";
+       String tipoUsuario="";
        Usuario=txtUsuario.getText();
        Contrasenia=txtContrasenia.getText();
        Connection conector =base.Conectar(Usuario, Contrasenia);
        if(conector!=null){
-           usuario=base.ConsultarUsuario();
+           tipoUsuario=base.ConsultarUsuario();
+           System.out.println(tipoUsuario);
+           
+           Menu_AdminController admc= new Menu_AdminController();
+           admc.setCredenciales(txtUsuario.getText(),txtContrasenia.getText());
+           
            base.cerrarConexion();
-           System.out.println(usuario);
-           switch(usuario){
+           switch(tipoUsuario){
                 case "VENDEDOR":
                     System.out.println("Exitoso");
                     Notifications notificationsBuilderVended = Notifications.create()
@@ -56,7 +61,6 @@ public class LoginController implements Initializable {
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
                      notificationsBuilderVended.showConfirm();
-
                     Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
                     Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stage.setTitle("Bienvenido");
@@ -70,7 +74,6 @@ public class LoginController implements Initializable {
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
                     notificationsBuilderAdmin.showConfirm();
-
                     Parent Admin = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
                     Stage stageAdmin = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stageAdmin.setTitle("Bienvenido");

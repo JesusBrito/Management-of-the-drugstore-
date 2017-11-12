@@ -1,6 +1,7 @@
 package farmacia.Utilidades;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Bd {
     private Connection conexion=null;
@@ -44,7 +45,37 @@ public class Bd {
         }
         return usuario;
     }
-    public void cerrarConexion() throws SQLException{
+  
+    public ArrayList<String[]> Seleccionar(String query){
+
+        ArrayList<String[]> elementos = new ArrayList<>();
+        try{
+            Statement cmd = conexion.createStatement();
+            ResultSet res = cmd.executeQuery(query);
+            
+            int clm = res.getMetaData().getColumnCount();
+            
+            while(res.next()){               
+                String[] data = new String[res.getMetaData().getColumnCount()];  
+                
+                for (int i = 0; i<=clm-1; i++){   
+                    String dato = res.getString(res.getMetaData().getColumnName(i+1));
+                    data[i] = dato;
+                }
+                elementos.add(data);
+            }
+            res.close();
+            cmd.close();
+            
+        }catch (SQLException ex){
+            System.err.println(ex);
+            //ErrorMessage("MySQL Error", "Ha ocurrido un error en la Base de Datos", "No se pudo seleccionar información desde la Base de Datos.");
+        }
+        return elementos;
+    }
+    
+     public void cerrarConexion() throws SQLException{
         conexion.close();
     }
+    
 }

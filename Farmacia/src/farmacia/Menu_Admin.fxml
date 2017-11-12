@@ -8,23 +8,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.Administrador.Menu_AdminController">
+<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="975.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.Administrador.Menu_AdminController">
    <children>
-      <TabPane layoutY="79.0" prefHeight="477.0" prefWidth="781.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="79.0" prefHeight="477.0" prefWidth="975.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Reporte de ventas">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="414.0" prefWidth="724.0">
                      <children>
-                        <TableView layoutX="24.0" layoutY="22.0" prefHeight="279.0" prefWidth="741.0">
+                        <TableView fx:id="tvVentas" layoutX="124.0" layoutY="21.0" prefHeight="279.0" prefWidth="741.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="colRfc" prefWidth="88.0" text="RFC" />
+                            <TableColumn fx:id="colNota" prefWidth="82.0" text="No_Nota" />
+                            <TableColumn fx:id="colFecha" prefWidth="85.0" text="Fecha" />
+                              <TableColumn fx:id="colNombre" prefWidth="117.0" text="Nombre" />
+                              <TableColumn fx:id="colPaterno" prefWidth="108.0" text="Ap Paterno" />
+                              <TableColumn fx:id="colMaterno" prefWidth="115.0" text="Ap Materno" />
+                              <TableColumn fx:id="colTotal" prefWidth="142.0" text="Total" />
                           </columns>
                         </TableView>
                         <JFXButton layoutX="571.0" layoutY="350.0" prefHeight="32.0" prefWidth="192.0" style="-fx-background-color: #babdc4;" text="Generar reporte de ventas" textAlignment="CENTER" />
-                        <JFXDatePicker layoutX="57.0" layoutY="355.0" />
-                        <JFXDatePicker layoutX="292.0" layoutY="355.0" />
+                        <DatePicker layoutX="57.0" layoutY="355.0" />
+                        <DatePicker layoutX="292.0" layoutY="355.0" />
                         <Label layoutX="57.0" layoutY="329.0" text="Fecha de inicio" />
                         <Label layoutX="293.0" layoutY="329.0" text="Fecha de fin" />
                      </children></AnchorPane>
@@ -32,19 +37,29 @@
           </Tab>
           <Tab text="Proveedores">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="444.0" prefWidth="831.0">
                      <children>
-                        <TableView layoutX="14.0" layoutY="91.0" prefHeight="269.0" prefWidth="751.0">
+                        <TableView fx:id="tvProveedores" layoutX="17.0" layoutY="93.0" prefHeight="263.0" prefWidth="943.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="colRFC" prefWidth="41.0" text="RFC" />
+                              <TableColumn fx:id="colProv" prefWidth="117.0" text="Proveedor" />
+                              <TableColumn fx:id="colapPaterno" prefWidth="90.0" text="Paterno" />
+                              <TableColumn fx:id="colapMaterno" prefWidth="72.0" text="Materno" />
+                              <TableColumn fx:id="colCalle" prefWidth="69.0" text="Calle" />
+                              <TableColumn fx:id="colColonia" prefWidth="92.0" text="Colonia" />
+                              <TableColumn fx:id="colNum" prefWidth="63.0" text="Num" />
+                              <TableColumn fx:id="colCiudad" prefWidth="75.0" text="Ciudad" />
+                              <TableColumn fx:id="colDeleg" prefWidth="64.0" text="Deleg" />
+                              <TableColumn fx:id="colCp" prefWidth="40.0" text="Cp" />
+                              <TableColumn fx:id="colTelefono" minWidth="0.0" prefWidth="95.0" text="Telefono" />
+                              <TableColumn fx:id="colNombreCon" prefWidth="122.0" text="Nombre" />
                           </columns>
                         </TableView>
-                        <JFXButton layoutX="73.0" layoutY="390.0" text="Agregar" />
+                        <JFXButton layoutX="80.0" layoutY="390.0" text="Agregar" />
                         <JFXButton layoutX="168.0" layoutY="390.0" text="Modificar" />
                         <JFXButton layoutX="272.0" layoutY="390.0" text="Eliminar" />
-                        <JFXButton layoutX="678.0" layoutY="38.0" text="Buscar" />
-                        <JFXTextField layoutX="14.0" layoutY="35.0" maxWidth="648.0" minWidth="604.0" prefHeight="31.0" prefWidth="604.0" promptText="RFC del proveedor" />
+                        <JFXButton layoutX="701.0" layoutY="45.0" text="Buscar" />
+                        <JFXTextField fx:id="txtRrfProv" layoutX="79.0" layoutY="38.0" maxWidth="648.0" minWidth="604.0" prefHeight="31.0" prefWidth="604.0" promptText="RFC del proveedor" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -77,10 +92,10 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Pane layoutY="1.0" prefHeight="78.0" prefWidth="781.0" style="-fx-background-color: #babdc4;">
+      <Pane layoutY="1.0" prefHeight="78.0" prefWidth="975.0" style="-fx-background-color: #babdc4;">
          <children>
-            <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="663.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="421.0" layoutY="36.0" text="Nombre de usuario " />
+            <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="853.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="713.0" layoutY="34.0" text="Nombre de usuario " />
          </children>
       </Pane>
    </children>
