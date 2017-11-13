@@ -59,7 +59,11 @@
                               <TableColumn fx:id="colNombreCon" prefWidth="122.0" text="Nombre" />
                           </columns>
                         </TableView>
-                        <JFXButton layoutX="80.0" layoutY="390.0" text="Agregar" />
+                        <JFXButton layoutX="80.0" layoutY="390.0" text="Agregar" onAction="#btnAgregarClicked" >
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </JFXButton>
                         <JFXButton layoutX="168.0" layoutY="390.0" text="Modificar" />
                         <JFXButton layoutX="272.0" layoutY="390.0" text="Eliminar" />
                         <JFXButton layoutX="701.0" layoutY="45.0" text="Buscar" onAction="#btnBuscarProveedorClicked">

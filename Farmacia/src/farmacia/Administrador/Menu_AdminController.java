@@ -17,10 +17,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -103,6 +110,18 @@ public class Menu_AdminController implements Initializable {
             ObtenerDatosVentas(Query);
         }
     }
+    
+    public void btnAgregarClicked(ActionEvent event) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("AgregarProveedor.fxml"));      
+        Stage stage = new Stage();
+        stage.setTitle("Agregar nuevo proveedor");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
+        stage.show(); 
+    }
+    
     //==============BUSQUEDA DE PROVEEDORES==============
     public void btnBuscarProveedorClicked(ActionEvent event) throws IOException, SQLException, ParseException { 
         String RFC= txtRrfProv.getText();

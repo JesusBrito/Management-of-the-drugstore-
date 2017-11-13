@@ -76,6 +76,5 @@ public class Bd {
     
      public void cerrarConexion() throws SQLException{
         conexion.close();
-    }
-    
+    }    
 }
