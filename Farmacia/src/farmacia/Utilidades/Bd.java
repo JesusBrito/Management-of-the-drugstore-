@@ -74,7 +74,37 @@ public class Bd {
         return elementos;
     }
     
-     public void cerrarConexion() throws SQLException{
+    public void Eliminar (String query){
+        try{
+            conexion.setAutoCommit(false);
+            
+            Statement ps= conexion.createStatement();
+            ps.executeUpdate(query);
+            conexion.commit();
+            ps.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+    }
+    public void Actualizar (String query) throws SQLException{
+        
+    }
+    
+    public boolean InsertarClientes(String Query) throws SQLException{
+        try{
+           conexion.setAutoCommit(false);
+
+           Statement ps = conexion.createStatement();
+           ps.executeUpdate(Query);
+           conexion.commit();
+           ps.close();
+           return true;    
+        }catch (SQLException  ex){
+            System.out.println(ex);
+            return false;  
+        }
+    }
+    public void cerrarConexion() throws SQLException{
         conexion.close();
     }    
 }

@@ -3,6 +3,7 @@ package farmacia.Administrador;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Utilidades.Bd;
+import farmacia.Utilidades.Usuario;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -43,11 +44,15 @@ public class Menu_AdminController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    String UsuarioBD="asd", PasswordBD="asd";
     String Query="";
     String fechaInicio="";
     String fechaFin="";
     String pattern="";
+    
+    Usuario datosUsuario= new Usuario();
+    String UsuarioBD= datosUsuario.getUsuario();
+    String PasswordBD= datosUsuario.getPassword();
+        
     //==============TABLA DE PROVEEDORES==============    
     @FXML private TableView<Proveedores> tvProveedores;
     @FXML private TableColumn<Proveedores, String> colRFC;
@@ -62,7 +67,6 @@ public class Menu_AdminController implements Initializable {
     @FXML private TableColumn<Proveedores, String> colCp;
     @FXML private TableColumn<Proveedores, String> colTelefono;
     @FXML private TableColumn<Proveedores, String> colNombreCon;
-    
     @FXML private JFXTextField txtRrfProv;
     
     ObservableList<Proveedores> dataProveedores = FXCollections.observableArrayList();
@@ -70,7 +74,6 @@ public class Menu_AdminController implements Initializable {
     
      //==============TABLA DE REPORTE DE VENTAS==============
     @FXML private TableView<Ventas> tvVentas;
-    
     @FXML private TableColumn<Ventas, String> colRfc;
     @FXML private TableColumn<Ventas, String> colNota;
     @FXML private TableColumn<Ventas, String> colFecha;
@@ -129,11 +132,27 @@ public class Menu_AdminController implements Initializable {
             ObtenerDatosProveedores(Query);
     }
     
-    public void setCredenciales(String usr, String pass){
-       this.UsuarioBD=usr;
-       this.PasswordBD=pass;
+    //==============ACTUALIZAR PROVEEDORES==============
+    public void btnActualizarClicked(ActionEvent event) throws SQLException{
+       try {
+            Query="SELECT * FROM ELENA.PROVEEDORES";
+            ObtenerDatosProveedores(Query);
+         } catch (SQLException ex) {
+             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (ParseException ex) {
+             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (IOException ex) {
+             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
+         }    
     }
-
+    
+    public void btnEliminarClicked(ActionEvent event) throws SQLException, ParseException, IOException{
+        String Query="";
+        ObservableList<Proveedores> proveedorSelected;
+        String rfcSelected =tvProveedores.getSelectionModel().getSelectedItem().rfc().getValue().toString();
+        Query="DELETE FROM ELENA.PROVEEDORES WHERE RFC='"+rfcSelected+"'"; 
+        eliminarProveedor(Query);
+    } 
     public void LlenarTablaProveedores(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         colRFC.setCellValueFactory(cellData -> cellData.getValue().rfc());
@@ -176,7 +195,6 @@ public class Menu_AdminController implements Initializable {
         db.cerrarConexion();
         LlenarTablaProveedores();
     }
-    
     public void LlenarTablaVentas(){
         colRfc.setCellValueFactory(cellData -> cellData.getValue().Rfc);
         colNota.setCellValueFactory(cellData -> cellData.getValue().NoNota);
@@ -209,9 +227,19 @@ public class Menu_AdminController implements Initializable {
         LlenarTablaVentas();
     }
     
+    public void eliminarProveedor(String Query) throws SQLException, ParseException, IOException{
+        Bd db = new Bd();
+        db.Conectar("administrador1", "12345");
+        
+        db.Eliminar(Query);
+        
+        Query=("SELECT * FROM ELENA.PROVEEDORES");
+        ObtenerDatosProveedores(Query);
+        
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        System.out.println(datosUsuario.getUsuario()+"--"+datosUsuario.getPassword());
         try {
             Query="SELECT * FROM ELENA.PROVEEDORES";
             ObtenerDatosProveedores(Query);

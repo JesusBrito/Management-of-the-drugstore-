@@ -10,7 +10,7 @@ import farmacia.Utilidades.Bd;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import farmacia.Administrador.Menu_AdminController;
+import farmacia.Utilidades.Usuario;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -40,15 +40,19 @@ public class LoginController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
        Bd base = new Bd();
+       Usuario datosUsuario= new Usuario();
        String tipoUsuario="";
        Usuario=txtUsuario.getText();
        Contrasenia=txtContrasenia.getText();
        Connection conector =base.Conectar(Usuario, Contrasenia);
+       System.out.println(Usuario+"-"+Contrasenia);
+       
+       datosUsuario.setUsuario(Usuario);
+       datosUsuario.setPassword(Contrasenia);
+       System.out.println(datosUsuario.getUsuario()+"--"+datosUsuario.getPassword());
+       
        if(conector!=null){
-           tipoUsuario=base.ConsultarUsuario();          
-           Menu_AdminController admc= new Menu_AdminController();
-           admc.setCredenciales(txtUsuario.getText(),txtContrasenia.getText());
-           
+           tipoUsuario=base.ConsultarUsuario();                    
            base.cerrarConexion();
            switch(tipoUsuario){
                 case "VENDEDOR":
@@ -58,7 +62,7 @@ public class LoginController implements Initializable {
                      .text("Que tenga un excelente día :)")
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
-                     notificationsBuilderVended.showConfirm();
+                    notificationsBuilderVended.showConfirm();
                     Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
                     Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stage.setTitle("Bienvenido");
@@ -84,8 +88,7 @@ public class LoginController implements Initializable {
                      .text("Que tenga un excelente día :)")
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
-                     notificationsBuilderAlmacen.showConfirm();
-
+                    notificationsBuilderAlmacen.showConfirm();
                     Parent Alm = FXMLLoader.load(getClass().getResource("Menu_Almacen.fxml"));
                     Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stageAlm.setTitle("Bienvenido");
@@ -124,5 +127,4 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
 }
