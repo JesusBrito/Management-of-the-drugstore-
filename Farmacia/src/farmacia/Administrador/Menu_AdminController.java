@@ -1,5 +1,5 @@
 package farmacia.Administrador;
-
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -73,7 +75,8 @@ public class Menu_AdminController implements Initializable {
     @FXML private TableColumn<Proveedores, String> colTelefono;
     @FXML private TableColumn<Proveedores, String> colNombreCon;
     @FXML private JFXTextField txtRrfProv;
-    
+    @FXML private JFXButton btnModificarProveedor;
+    @FXML private JFXButton btnEliminarProveedor;
     ObservableList<Proveedores> dataProveedores = FXCollections.observableArrayList();
     ArrayList<String[]> proveedor = new ArrayList<>();
     
@@ -98,12 +101,12 @@ public class Menu_AdminController implements Initializable {
     @FXML private Label lblNombreUsuario;
 
     //==============REGISTRO DE VENDEDORES==============
-    @FXML private ComboBox<Usuario> cmbProveedores;
     @FXML private TableView<Usuario> tvUsuarios;
     @FXML private JFXTextField txtNombreUsuario;
     @FXML private JFXTextField txtNombre;
     @FXML private JFXPasswordField txtContrasenia;
     @FXML private JFXComboBox cmbTipoUsuario;
+    @FXML private JFXButton btnEliminarUsuario;
     ObservableList<Usuario> dataUsuarios = FXCollections.observableArrayList();
     ArrayList<String[]> usuario = new ArrayList<>();
     
@@ -111,6 +114,10 @@ public class Menu_AdminController implements Initializable {
     //==============TABLA DE REPORTE DE VENDEDORES==============
     @FXML private TableColumn<Usuario, String> colNomb;
     @FXML private TableColumn<Usuario, String> colTipo;
+    
+    //==============LISTA DE PROVEEDORES==============
+    @FXML private ComboBox<Proveedores> cmbProveedores;
+    
     
     @FXML
     public void btnCerrarSesionClicked(ActionEvent event) throws IOException{
@@ -282,7 +289,9 @@ public class Menu_AdminController implements Initializable {
         colCp.setCellValueFactory(cellData -> cellData.getValue().Cp());
         colTelefono.setCellValueFactory(cellData -> cellData.getValue().Telefono());
         colNombreCon.setCellValueFactory(cellData -> cellData.getValue().nombre());
+        cmbProveedores.setItems(dataProveedores);
         tvProveedores.setItems(dataProveedores);
+        gestionarEventos();
     }
     
     public void ObtenerDatosProveedores(String Query) throws SQLException, ParseException, IOException{
@@ -331,6 +340,7 @@ public class Menu_AdminController implements Initializable {
         colNomb.setCellValueFactory(cellData -> cellData.getValue().getUsuario());
         colTipo.setCellValueFactory(cellData -> cellData.getValue().getPassword());
         tvUsuarios.setItems(dataUsuarios);
+        gestionarEventosUsuarios();
     }
     public void LlenarTablaVentas(){
         
@@ -343,7 +353,6 @@ public class Menu_AdminController implements Initializable {
         colTotal.setCellValueFactory(cellData -> cellData.getValue().Total);
         tvVentas.setItems(dataVentas);
     }
-    
     public void ObtenerDatosVentas(String Query) throws SQLException, ParseException, IOException{
         //Se llena la colección "dataVentas" en base a la base de datos.
         dataVentas.clear();
@@ -413,6 +422,7 @@ public class Menu_AdminController implements Initializable {
         try {
             Query="SELECT * FROM ELENA.PROVEEDORES";
             ObtenerDatosProveedores(Query);
+            
             Query= "SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, \n" +
                                "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA \n" +
                                "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC";
@@ -424,11 +434,35 @@ public class Menu_AdminController implements Initializable {
          }
         lblNombreUsuario.setText(this.Usuario);
     }
+    
+    private void gestionarEventos() {
+        tvProveedores.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Proveedores>() {
+            @Override
+            public void changed(ObservableValue<? extends Proveedores> observable, Proveedores oldValue, Proveedores newValue) {
+                btnEliminarProveedor.setDisable(false);
+                btnModificarProveedor.setDisable(false);
+            }
+        });
+      
+    }
+    
+    private void gestionarEventosUsuarios() {
+        tvUsuarios.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Usuario>() {
+            @Override
+            public void changed(ObservableValue<? extends Usuario> observable, Usuario oldValue, Usuario newValue) {
+                btnEliminarUsuario.setDisable(false);
+            }
+        });
+    }
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {        
         cmbTipoUsuario.getItems().addAll(
             "VENDEDOR",
             "ALMACEN"
         ); 
     }      
+
+    
 }

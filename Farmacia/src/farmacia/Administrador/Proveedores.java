@@ -10,8 +10,8 @@ public class Proveedores extends farmacia.Utilidades.Persona {
     StringProperty NombreEmpresa;
 
 public Proveedores(){}
-public Proveedores(String rfc,String nombre, String apPaterno, String apMaterno, String calle, String colonia , String numero,
-            String ciudad, String delegacion, String cp, String telefono, String nombreEmpresa){
+public Proveedores(String rfc,String nombreEmpresa, String apPaterno, String apMaterno, String calle, String colonia , String numero,
+            String ciudad, String delegacion, String cp, String telefono, String nombre){
         this.RFC= new SimpleStringProperty(rfc);
         this.Nombre=new SimpleStringProperty(nombre);
         this.ApPaterno= new SimpleStringProperty(apPaterno);
@@ -62,4 +62,9 @@ public Proveedores(String rfc,String nombre, String apPaterno, String apMaterno,
     public SimpleStringProperty Telefono() {
         return (SimpleStringProperty) this.Telefono;
     }
+    
+    @Override
+    public String toString(){
+        return this.NombreEmpresa.get();
+    }   
 }

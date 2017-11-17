@@ -32,8 +32,8 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </JFXButton>
-                        <JFXDatePicker fx:id="dateIni" layoutX="16.0" layoutY="45.0" />
-                        <JFXDatePicker fx:id="dateFin" layoutX="259.0" layoutY="45.0" />
+                        <DatePicker fx:id="dateIni" layoutX="16.0" layoutY="45.0" />
+                        <DatePicker fx:id="dateFin" layoutX="259.0" layoutY="45.0" />
                         <Label layoutX="16.0" layoutY="19.0" text="Fecha de inicio" />
                         <Label layoutX="260.0" layoutY="19.0" text="Fecha de fin" />
                         <JFXButton layoutX="482.0" layoutY="72.0" text="Imprimir reporte" />
@@ -65,8 +65,8 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </JFXButton>
-                        <JFXButton layoutX="168.0" layoutY="390.0" onAction="#btnModificarClicked" text="Modificar" />
-                        <JFXButton layoutX="272.0" layoutY="390.0" onAction="#btnEliminarClicked" text="Eliminar" />
+                        <JFXButton fx:id="btnModificarProveedor" disable="true" layoutX="168.0" layoutY="390.0" onAction="#btnModificarClicked" text="Modificar" />
+                        <JFXButton fx:id="btnEliminarProveedor" disable="true" layoutX="272.0" layoutY="390.0" onAction="#btnEliminarClicked" text="Eliminar" />
                         <JFXButton layoutX="701.0" layoutY="45.0" onAction="#btnBuscarProveedorClicked" text="Buscar">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
@@ -87,22 +87,13 @@
                             <TableColumn fx:id="colTipo" prefWidth="158.0" text="Tipo de Usuario" />
                           </columns>
                         </TableView>
-                        <JFXButton layoutX="827.0" onAction="#btnAgregarUsuarioClicked" layoutY="143.0" text="Agregar" />
-                        <JFXButton layoutX="356.0" onAction="#btnEliminarrUsuarioClicked" layoutY="360.0" text="Eliminar" />
+                        <JFXButton layoutX="827.0" layoutY="143.0" onAction="#btnAgregarUsuarioClicked" text="Agregar" />
+                        <JFXButton fx:id="btnEliminarUsuario" disable="true" layoutX="356.0" layoutY="360.0" onAction="#btnEliminarrUsuarioClicked" text="Eliminar" />
                         <JFXTextField fx:id="txtNombreUsuario" layoutX="15.0" layoutY="25.0" maxWidth="575.0" minWidth="322.0" prefHeight="31.0" prefWidth="575.0" promptText="Nombre del vendedor" unFocusColor="BLACK" />
                         <JFXButton layoutX="638.0" layoutY="28.0" onAction="#btnBuscarUsuarioClicked" text="Buscar" />
                         <JFXTextField fx:id="txtNombre" layoutX="368.0" layoutY="96.0" promptText="Usuario" />
                         <JFXPasswordField fx:id="txtContrasenia" labelFloat="true" layoutX="536.0" layoutY="95.0" maxWidth="214.0" minWidth="185.0" prefHeight="31.0" prefWidth="185.0" promptText="Contraseña" unFocusColor="BLACK" />
                         <JFXComboBox fx:id="cmbTipoUsuario" editable="true" layoutX="734.0" layoutY="88.0" prefHeight="25.0" prefWidth="158.0" promptText="Tipo de usuario" />
-                     </children></AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="Registro de producto">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <JFXTextField layoutX="524.0" layoutY="39.0" promptText="Nombre del producto" />
-                        <JFXComboBox fx:id="cmbProveedores" layoutX="65.0" layoutY="52.0" prefHeight="25.0" prefWidth="161.0" promptText="Proveedor" />
                      </children></AnchorPane>
               </content>
             </Tab>
