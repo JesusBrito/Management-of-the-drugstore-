@@ -52,15 +52,15 @@ public class AgregarProveedorController implements Initializable {
         String Query="";
         rfc=txtRfc.getText();
         empresa=txtEmpresa.getText();
-        paterno=txtPaterno.getText();
-        materno=txtMaterno.getText();
+        paterno=(txtPaterno.getText().length()>0) ? txtPaterno.getText():"null";
+        materno=(txtMaterno.getText().length()>0) ? txtMaterno.getText():"null";
         calle=txtCalle.getText();
         colonia=txtColonia.getText();
         numero=Integer.parseInt(txtNumero.getText());
         ciudad=txtCiudad.getText();
         delegacion=txtDelegacion.getText();
         cp=Integer.parseInt(txtCp.getText());
-        telefono=txtTelefono.getText();
+        telefono=(txtTelefono.getText().length()>0)? txtTelefono.getText() :"null";
         nombre=txtNombre.getText();
         
         if(rfc.equals("")){
@@ -74,8 +74,7 @@ public class AgregarProveedorController implements Initializable {
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
             alert2.setHeaderText("Campos llenados incorrectamente");
-            alert2.setContentText("El nombre de la empresa, nombre de contacto,\n"
-                    + " calle, colonia y ciudad\n son obligatorios");
+            alert2.setContentText("Todos los campos a excepcion de los apellidos y el telefono son obligatorios");
             alert2.showAndWait();
             
         }else{
@@ -94,12 +93,11 @@ public class AgregarProveedorController implements Initializable {
         Bd db = new Bd();
         db.Conectar("administrador1", "12345");
         if(db.InsertarClientes(Query)==true){
-            Notifications notificationsBuilderAlmacen = Notifications.create()
-            .title("Registro exitoso")           
-            .text("El proveedor "+empresa+" se ha registrado correctamente")
-            .hideAfter(Duration.seconds(4))
-            .position(Pos.TOP_RIGHT);
-            notificationsBuilderAlmacen.showInformation();
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setTitle("Registro exitoso");
+           alert.setHeaderText("Error en las fechas");
+           alert.setContentText("El proveedor "+empresa+" se ha registrado correctamente");
+           alert.showAndWait();        
         }else{
             Notifications notificationsBuilderAlmacen = Notifications.create()
             .title("Error al registrar el proveedor")           

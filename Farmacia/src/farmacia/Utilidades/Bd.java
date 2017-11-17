@@ -86,15 +86,20 @@ public class Bd {
             System.out.println(ex);
         }
     }
-    public void Actualizar (String query) throws SQLException{
+    public boolean Actualizar (String Query) throws SQLException{
+        try(PreparedStatement ps = conexion.prepareStatement(Query)){
+            ps.executeQuery(); 
+           return true;    
+        }catch (SQLException  ex){
+            System.out.println(ex);
+            return false;  
+        }
         
     }
     
     public boolean InsertarClientes(String Query) throws SQLException{
-        try{
+        try(Statement ps = conexion.createStatement()){
            conexion.setAutoCommit(false);
-
-           Statement ps = conexion.createStatement();
            ps.executeUpdate(Query);
            conexion.commit();
            ps.close();

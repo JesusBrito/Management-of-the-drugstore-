@@ -5,30 +5,27 @@
  */
 package farmacia.Utilidades;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author jesus
  */
 public class Usuario {
-    private  String Usuario =""; 
-    private  String Password =""; 
+    private  StringProperty Usuario; 
+    private  StringProperty Password;
+    private  StringProperty Rol;
     
     public Usuario(){}
     public Usuario(String usr, String pass){
-        this.Usuario=usr;
-        this.Password=pass;
+        this.Usuario= new SimpleStringProperty(usr);
+        this.Password= new SimpleStringProperty(pass);
+    }    
+    public SimpleStringProperty getUsuario(){
+        return (SimpleStringProperty)Usuario;
     }
-    
-    public String getUsuario(){
-        return Usuario;
-    }
-    public String getPassword(){
-        return Password;
-    }
-    public void setUsuario(String usr){
-        this.Usuario=usr;
-    }
-    public void setPassword(String pass){
-        this.Password=pass;
+    public SimpleStringProperty getPassword(){
+        return(SimpleStringProperty) Password;
     }
 }

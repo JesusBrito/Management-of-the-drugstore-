@@ -24,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -71,7 +72,7 @@ public class Menu_AdminController implements Initializable {
     ObservableList<Proveedores> dataProveedores = FXCollections.observableArrayList();
     ArrayList<String[]> proveedor = new ArrayList<>();
     
-     //==============TABLA DE REPORTE DE VENTAS==============
+    //==============TABLA DE REPORTE DE VENTAS==============
     @FXML private TableView<Ventas> tvVentas;
     @FXML private TableColumn<Ventas, String> colRfc;
     @FXML private TableColumn<Ventas, String> colNota;
@@ -90,11 +91,25 @@ public class Menu_AdminController implements Initializable {
 
     
     @FXML private Label lblNombreUsuario;
-    public Menu_AdminController() {
-        this.Contrasenia = "a";
-        this.Usuario = "a";
-    }
+
+    //==============REGISTRO DE VENDEDORES==============
+    @FXML private ComboBox<Usuario> cmbProveedores;
+    @FXML private TableView<Usuario> tvUsuarios;
+    @FXML private JFXTextField txtNombreUsuario;
+    ObservableList<Usuario> dataUsuarios = FXCollections.observableArrayList();
+    ArrayList<String[]> usuario = new ArrayList<>();
     
+    //==============TABLA DE REPORTE DE VENDEDORES==============
+    @FXML private TableColumn<Usuario, String> colNomb;
+    @FXML private TableColumn<Usuario, String> colTipo;
+    
+    @FXML
+    public void btnCerrarSesionClicked(ActionEvent event) throws IOException{
+        Parent Alm = FXMLLoader.load(getClass().getResource("../Login.fxml"));
+        Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stageAlm.setTitle("Bienvenido");
+        stageAlm.setScene(new Scene(Alm));    
+    }
     @FXML
     public void btnGenerarReporteClicked(ActionEvent event) throws IOException, SQLException, ParseException {      
 
@@ -105,12 +120,12 @@ public class Menu_AdminController implements Initializable {
            Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("Error");
            alert.setHeaderText("Error en las fechas");
-           alert.setContentText("Debe elejir la fecha de inicio\n y la fecha de fin");
+           alert.setContentText("Debe elegir la fecha de inicio\n y la fecha de fin");
            alert.showAndWait();        
         }else{
             DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
-            String fechaInicio  = fechaI.format(formatters);
-            String fechaFin  = fechaF.format(formatters);
+            fechaInicio  = fechaI.format(formatters);
+            fechaFin  = fechaF.format(formatters);
 
             Query="SELECT ELENA.VENTA_MEDICAMENTOS.NO_NOTA, ELENA.VENTA_MEDICAMENTOS.FECHA, ELENA.VENTA_MEDICAMENTOS.RFC, "
                     + "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA "
@@ -132,13 +147,11 @@ public class Menu_AdminController implements Initializable {
     }
     
     public void btnModificarClicked(ActionEvent event) throws IOException{
-        ObservableList<Proveedores> proveedorSelected;
-        String rfcSelected="";
-        rfcSelected =tvProveedores.getSelectionModel().getSelectedItem().rfc().getValue();
         
-        if(rfcSelected.equals("")){
-            
-        }else{
+        String rfcSelected="";
+        try{
+            rfcSelected =tvProveedores.getSelectionModel().getSelectedItem().rfc().getValue();
+                  
             String empresaSelected=tvProveedores.getSelectionModel().getSelectedItem().nombre().getValue();
             String paternoSelected=tvProveedores.getSelectionModel().getSelectedItem().apPaterno().getValue();
             String maternoSelected=tvProveedores.getSelectionModel().getSelectedItem().apMaterno().getValue();
@@ -159,9 +172,8 @@ public class Menu_AdminController implements Initializable {
             FXMLLoader loader = new FXMLLoader(Menu_AdminController.class.getResource("EditarProveedor.fxml"));
             rootPane=(AnchorPane) loader.load();
             EditarProveedorController controller = loader.getController();
-            controller.setProveedor(perSelected);
-
-            //Parent root = FXMLLoader.load(getClass().getResource("EditarProveedor.fxml"));      
+            controller.setProveedor(perSelected, this.Usuario,this.Contrasenia);
+     
             Stage stage = new Stage();
             stage.setTitle("Agregar nuevo proveedor");
             stage.setScene(new Scene(rootPane));
@@ -169,7 +181,13 @@ public class Menu_AdminController implements Initializable {
             stage.initOwner(((Node)event.getSource()).getScene().getWindow());
             stage.initStyle(StageStyle.UTILITY);
             stage.show();
-        }
+        }catch(IOException ex){
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error");
+            alert2.setHeaderText("Error al modificar");
+            alert2.setContentText("Debe seleccionar un proveedor");
+            alert2.showAndWait();
+        }        
     }
     
     //==============BUSQUEDA DE PROVEEDORES==============
@@ -184,22 +202,24 @@ public class Menu_AdminController implements Initializable {
        try {
             Query="SELECT * FROM ELENA.PROVEEDORES";
             ObtenerDatosProveedores(Query);
-         } catch (SQLException ex) {
-             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (ParseException ex) {
-             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (IOException ex) {
+         } catch (SQLException | ParseException | IOException ex) {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          }    
     }
-    
+    //================ELIMINAR PROVEEDOR=========================
     public void btnEliminarClicked(ActionEvent event) throws SQLException, ParseException, IOException{
-        String Query="";
-        
+        Query="";    
         String rfcSelected =tvProveedores.getSelectionModel().getSelectedItem().rfc().getValue();
         Query="DELETE FROM ELENA.PROVEEDORES WHERE RFC='"+rfcSelected+"'"; 
         eliminarProveedor(Query);
     } 
+    
+    //==============BUSQUEDA DE USUARIOS==============
+    public void btnBuscarUsuarioClicked(ActionEvent event) throws IOException, SQLException, ParseException { 
+        String Nombre= txtNombreUsuario.getText().toUpperCase();
+        Query=("SELECT GRANTEE, GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTEE='"+Nombre+"'");
+        ObtenerDatosUsuario(Query);
+    }
     public void LlenarTablaProveedores(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         colRFC.setCellValueFactory(cellData -> cellData.getValue().rfc());
@@ -242,6 +262,27 @@ public class Menu_AdminController implements Initializable {
         }
         db.cerrarConexion();
         LlenarTablaProveedores();
+    }
+    
+    public void ObtenerDatosUsuario(String Query) throws SQLException{
+        dataUsuarios.clear();
+        Bd db = new Bd();
+        db.Conectar("Elena", "brito");
+        usuario= db.Seleccionar(Query);
+       
+        for (int i = 0; i <=usuario.size()-1; i++) {
+            dataUsuarios.addAll( new Usuario(
+                    usuario.get(i)[0],
+                    usuario.get(i)[1]
+            ));
+        }
+        db.cerrarConexion();
+        LlenarTablaUsuario();
+    }
+    public void LlenarTablaUsuario(){
+        colNomb.setCellValueFactory(cellData -> cellData.getValue().getUsuario());
+        colTipo.setCellValueFactory(cellData -> cellData.getValue().getPassword());
+        tvUsuarios.setItems(dataUsuarios);
     }
     public void LlenarTablaVentas(){
         
@@ -289,8 +330,8 @@ public class Menu_AdminController implements Initializable {
     
     public void setCredenciales(Usuario usrSelected){
         
-        this.Usuario=usrSelected.getUsuario();
-        this.Contrasenia=usrSelected.getPassword();
+        this.Usuario=(usrSelected.getUsuario().getValue());
+        this.Contrasenia=(usrSelected.getPassword().getValue());
         System.out.println(this.Usuario+" Set 3"+this.Contrasenia);
         try {
             Query="SELECT * FROM ELENA.PROVEEDORES";
@@ -299,11 +340,9 @@ public class Menu_AdminController implements Initializable {
                                "ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA \n" +
                                "FROM ELENA.VENTA_MEDICAMENTOS JOIN ELENA.CLIENTES ON ELENA.CLIENTES.RFC= ELENA.VENTA_MEDICAMENTOS.RFC";
             ObtenerDatosVentas(Query);
-         } catch (SQLException ex) {
-             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (ParseException ex) {
-             Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (IOException ex) {
+            Query="SELECT GRANTEE, GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE=UPPER('vendedor') OR GRANTED_ROLE=UPPER('almacen') ORDER BY GRANTEE";
+            ObtenerDatosUsuario(Query);
+         } catch (SQLException | ParseException | IOException ex) {
              Logger.getLogger(Menu_AdminController.class.getName()).log(Level.SEVERE, null, ex);
          }
         lblNombreUsuario.setText(this.Usuario);

@@ -10,7 +10,6 @@ import farmacia.Utilidades.Bd;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import farmacia.Administrador.EditarProveedorController;
 import farmacia.Administrador.Menu_AdminController;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
@@ -21,9 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -48,8 +45,7 @@ public class LoginController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
        Bd base = new Bd();
-       Usuario datosUsuario= new Usuario();
-       String tipoUsuario="";
+       String tipoUsuario;
        Usuario=txtUsuario.getText();
        Contrasenia=txtContrasenia.getText();
        Connection conector =base.Conectar(Usuario, Contrasenia);       
