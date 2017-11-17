@@ -1,6 +1,8 @@
 package farmacia.Administrador;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Utilidades.Bd;
 import farmacia.Utilidades.Usuario;
@@ -20,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,6 +35,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 /**
  * FXML Controller class
@@ -96,8 +101,12 @@ public class Menu_AdminController implements Initializable {
     @FXML private ComboBox<Usuario> cmbProveedores;
     @FXML private TableView<Usuario> tvUsuarios;
     @FXML private JFXTextField txtNombreUsuario;
+    @FXML private JFXTextField txtNombre;
+    @FXML private JFXPasswordField txtContrasenia;
+    @FXML private JFXComboBox cmbTipoUsuario;
     ObservableList<Usuario> dataUsuarios = FXCollections.observableArrayList();
     ArrayList<String[]> usuario = new ArrayList<>();
+    
     
     //==============TABLA DE REPORTE DE VENDEDORES==============
     @FXML private TableColumn<Usuario, String> colNomb;
@@ -220,6 +229,45 @@ public class Menu_AdminController implements Initializable {
         Query=("SELECT GRANTEE, GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTEE='"+Nombre+"'");
         ObtenerDatosUsuario(Query);
     }
+    //==============AGREGAR USUARIOS===============
+
+    public void btnAgregarUsuarioClicked(ActionEvent event) throws SQLException{
+        Bd bd = new Bd();
+        if(cmbTipoUsuario.getValue()!=null && txtNombre.getText()!=null&& txtContrasenia.getText()!=null){
+            String cmbSeleccion = cmbTipoUsuario.getValue().toString();
+            Usuario nuevoUsuario = new Usuario(txtNombre.getText(), txtContrasenia.getText());
+            bd.Conectar(this.Usuario, this.Contrasenia);
+            if ( bd.CrearUsuario(nuevoUsuario, cmbSeleccion)) {
+                bd.cerrarConexion();
+                
+                Notifications notificationsBuilderAlmacen = Notifications.create()
+                .title("Registro exitoso")           
+                .text("El usuario: "+txtNombre.getText()+" se he registrado correctamente")
+                .hideAfter(Duration.seconds(4))
+                .position(Pos.TOP_RIGHT);
+                notificationsBuilderAlmacen.showConfirm();
+                bd.Conectar(this.Usuario, this.Contrasenia);
+                Query="SELECT GRANTEE, GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE=UPPER('vendedor') OR GRANTED_ROLE=UPPER('almacen') ORDER BY GRANTEE";
+                ObtenerDatosUsuario(Query);
+                txtNombre.setText("");
+                txtContrasenia.setText("");
+            }
+        }else{
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error");
+            alert2.setHeaderText("Error en los campos ");
+            alert2.setContentText("Debe seleccionar todos los campos");
+            alert2.showAndWait();
+        }        
+    }
+    //==============ELIMINAR USUARIOS===============
+    public void btnEliminarrUsuarioClicked(ActionEvent event) throws SQLException, ParseException, IOException{
+        Query="";    
+        String usuarioSelected = tvUsuarios.getSelectionModel().getSelectedItem().getUsuario().getValue();
+        Query="DROP USER "+usuarioSelected+""; 
+        eliminarUsuario(Query);
+    }
+    
     public void LlenarTablaProveedores(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         colRFC.setCellValueFactory(cellData -> cellData.getValue().rfc());
@@ -319,15 +367,44 @@ public class Menu_AdminController implements Initializable {
     
     public void eliminarProveedor(String Query) throws SQLException, ParseException, IOException{
         Bd db = new Bd();
-        db.Conectar(this.Usuario, this.Contrasenia);
-        
-        db.Eliminar(Query);
-        
-        Query=("SELECT * FROM ELENA.PROVEEDORES");
-        ObtenerDatosProveedores(Query);
-        
+        db.Conectar(this.Usuario, this.Contrasenia);  
+        if (db.Eliminar(Query)) {
+            db.Eliminar(Query);                
+            Notifications notificationsBuilderAlmacen = Notifications.create()
+            .title("Borrado exitoso")           
+            .text("El proveedor se ha eliminado correctamente")
+            .hideAfter(Duration.seconds(4))
+            .position(Pos.TOP_RIGHT);
+            notificationsBuilderAlmacen.showConfirm();
+            Query=("SELECT * FROM ELENA.PROVEEDORES");
+            ObtenerDatosProveedores(Query);
+        }else{
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error");
+            alert2.setContentText("No se pudo eliminar el usuario");
+            alert2.showAndWait();
+        }      
     }
-    
+    public void eliminarUsuario(String Query) throws SQLException, ParseException, IOException{
+        Bd db = new Bd();
+        db.Conectar(this.Usuario, this.Contrasenia);
+        if (db.Eliminar(Query)) {
+            db.cerrarConexion();                
+            Notifications notificationsBuilderAlmacen = Notifications.create()
+            .title("Borrado exitoso")           
+            .text("El usuario se ha eliminado correctamente")
+            .hideAfter(Duration.seconds(4))
+            .position(Pos.TOP_RIGHT);
+            notificationsBuilderAlmacen.showConfirm();
+            Query="SELECT GRANTEE, GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE=UPPER('vendedor') OR GRANTED_ROLE=UPPER('almacen') ORDER BY GRANTEE";
+            ObtenerDatosUsuario(Query);
+        }else{
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error");
+            alert2.setContentText("No se pudo eliminar el usuario");
+            alert2.showAndWait();
+        }        
+    }
     public void setCredenciales(Usuario usrSelected){
         
         this.Usuario=(usrSelected.getUsuario().getValue());
@@ -349,6 +426,9 @@ public class Menu_AdminController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        cmbTipoUsuario.getItems().addAll(
+            "VENDEDOR",
+            "ALMACEN"
+        ); 
     }      
 }

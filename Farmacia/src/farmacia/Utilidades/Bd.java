@@ -72,9 +72,8 @@ public class Bd {
             //ErrorMessage("MySQL Error", "Ha ocurrido un error en la Base de Datos", "No se pudo seleccionar información desde la Base de Datos.");
         }
         return elementos;
-    }
-    
-    public void Eliminar (String query){
+    }    
+    public boolean Eliminar (String query){
         try{
             conexion.setAutoCommit(false);
             
@@ -82,8 +81,10 @@ public class Bd {
             ps.executeUpdate(query);
             conexion.commit();
             ps.close();
+            return true; 
         }catch(SQLException ex){
             System.out.println(ex);
+            return false; 
         }
     }
     public boolean Actualizar (String Query) throws SQLException{
@@ -107,6 +108,28 @@ public class Bd {
         }catch (SQLException  ex){
             System.out.println(ex);
             return false;  
+        }
+    }
+    
+        
+    public boolean CrearUsuario(Usuario usr, String tipo){
+        String Query;
+        try(Statement ps = conexion.createStatement()){
+           conexion.setAutoCommit(false);
+            System.out.println("Entra bien");
+           Query="CREATE USER "+usr.getUsuario().getValue()+" IDENTIFIED BY "+usr.getPassword().getValue()+"";  
+            System.out.println(Query);
+           ps.executeUpdate(Query);
+           System.out.println("lo crea");
+           Query="GRANT "+tipo+" TO "+usr.getUsuario().getValue()+""; 
+           ps.executeUpdate(Query);
+           System.out.println("agrega el rol");
+           conexion.commit();
+           ps.close();
+           return true;    
+        }catch (SQLException  ex){
+            System.out.println(ex);
+            return false; 
         }
     }
     public void cerrarConexion() throws SQLException{
