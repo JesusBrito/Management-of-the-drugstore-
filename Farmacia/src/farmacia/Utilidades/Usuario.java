@@ -14,6 +14,10 @@ public class Usuario {
     private  String Password =""; 
     
     public Usuario(){}
+    public Usuario(String usr, String pass){
+        this.Usuario=usr;
+        this.Password=pass;
+    }
     
     public String getUsuario(){
         return Usuario;

@@ -10,6 +10,8 @@ import farmacia.Utilidades.Bd;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import farmacia.Administrador.EditarProveedorController;
+import farmacia.Administrador.Menu_AdminController;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +20,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -30,6 +35,9 @@ public class LoginController implements Initializable {
     String Usuario="";
     String Contrasenia="";
     int contadorInicio=1;
+    
+    private Stage stagePrincipal = new Stage();;
+    private AnchorPane rootPane;
     @FXML
     private JFXTextField txtUsuario;
     @FXML
@@ -44,13 +52,8 @@ public class LoginController implements Initializable {
        String tipoUsuario="";
        Usuario=txtUsuario.getText();
        Contrasenia=txtContrasenia.getText();
-       Connection conector =base.Conectar(Usuario, Contrasenia);
-       System.out.println(Usuario+"-"+Contrasenia);
-       
-       datosUsuario.setUsuario(Usuario);
-       datosUsuario.setPassword(Contrasenia);
-       System.out.println(datosUsuario.getUsuario()+"--"+datosUsuario.getPassword());
-       
+       Connection conector =base.Conectar(Usuario, Contrasenia);       
+       Usuario usuarioSelected= new Usuario(Usuario,Contrasenia);
        if(conector!=null){
            tipoUsuario=base.ConsultarUsuario();                    
            base.cerrarConexion();
@@ -63,10 +66,13 @@ public class LoginController implements Initializable {
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
                     notificationsBuilderVended.showConfirm();
+                    
+
                     Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
                     Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stage.setTitle("Bienvenido");
                     stage.setScene(new Scene(root));
+
                     break;
                 case "ADMINISTRADOR":
                     System.out.println("Exitoso");
@@ -76,10 +82,15 @@ public class LoginController implements Initializable {
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
                     notificationsBuilderAdmin.showConfirm();
-                    Parent Admin = FXMLLoader.load(getClass().getResource("Menu_Admin.fxml"));
-                    Stage stageAdmin = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    stageAdmin.setTitle("Bienvenido");
-                    stageAdmin.setScene(new Scene(Admin));    
+                    
+                    FXMLLoader loader = new FXMLLoader(LoginController.class.getResource("Menu_Admin.fxml"));
+                    rootPane=(AnchorPane) loader.load();
+                    Menu_AdminController controller = loader.getController();
+                    controller.setCredenciales(usuarioSelected);
+                    Stage stageA = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    stageA.setTitle("Bienvenido "+ Usuario);
+                    stageA.setScene(new Scene(rootPane));
+                    stageA.show();
                     break;
                 case "ALMACEN":
                     System.out.println("Exitoso");

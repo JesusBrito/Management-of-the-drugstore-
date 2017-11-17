@@ -64,7 +64,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </JFXButton>
-                        <JFXButton layoutX="168.0" layoutY="390.0" text="Modificar" />
+                        <JFXButton layoutX="168.0" layoutY="390.0" onAction="#btnModificarClicked" text="Modificar" />
                         <JFXButton layoutX="272.0" layoutY="390.0" onAction="#btnEliminarClicked" text="Eliminar" />
                         <JFXButton layoutX="701.0" layoutY="45.0" onAction="#btnBuscarProveedorClicked" text="Buscar">
                             <cursor>
@@ -108,7 +108,7 @@
       <Pane layoutY="1.0" prefHeight="78.0" prefWidth="975.0" style="-fx-background-color: #babdc4;">
          <children>
             <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="853.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="713.0" layoutY="34.0" text="Nombre de usuario " />
+            <Label fx:id="lblNombreUsuario" layoutX="713.0" layoutY="34.0" text="Nombre de usuario " />
          </children>
       </Pane>
    </children>
