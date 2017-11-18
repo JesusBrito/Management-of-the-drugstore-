@@ -1,14 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="farmacia.Almacen.Menu_AlmacenController">
+<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="975.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.Almacen.Menu_AlmacenController">
    <children>
-      <Label layoutX="233.0" layoutY="54.0" text="Almacen" />
+      <TabPane layoutY="79.0" prefHeight="477.0" prefWidth="975.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Reporte de almacen">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="444.0" prefWidth="831.0">
+                     <children>
+                        <TableView fx:id="tvProveedores" layoutX="17.0" layoutY="93.0" prefHeight="263.0" prefWidth="943.0">
+                          <columns>
+                              <TableColumn fx:id="colCodigo" prefWidth="77.0" text="Codigo" />
+                              <TableColumn fx:id="colNombre" prefWidth="170.0" text="Nombre" />
+                              <TableColumn fx:id="colPrecio" prefWidth="149.0" text="Precio" />
+                              <TableColumn fx:id="colapExistencia" prefWidth="173.0" text="Existencia" />
+                              <TableColumn fx:id="colUnidad" prefWidth="171.0" text="Unidad" />
+                              <TableColumn fx:id="coProveedor" prefWidth="192.0" text="Proveedor" />
+                          </columns>
+                        </TableView>
+                        <JFXButton layoutX="80.0" layoutY="390.0" text="Agregar">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </JFXButton>
+                        <JFXButton fx:id="btnAgregarStock" disable="true" layoutX="168.0" layoutY="390.0"  text="Agregar Stock" />
+                        <JFXButton layoutX="701.0" layoutY="45.0" text="Buscar">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </JFXButton>
+                        <JFXTextField fx:id="txtRrfProv" layoutX="79.0" layoutY="38.0" maxWidth="648.0" minWidth="196.0" prefHeight="31.0" prefWidth="211.0" promptText="Clave del producto" />
+                        <JFXButton fx:id="btnActualizarReg" layoutX="796.0" layoutY="46.0" text="Actualizar registros" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Realiza">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tvUsuarios" layoutX="42.0" layoutY="77.0" prefHeight="308.0" prefWidth="308.0">
+                          <columns>
+                            <TableColumn fx:id="colNomb" prefWidth="144.0" text="Nombre" />
+                            <TableColumn fx:id="colTipo" prefWidth="158.0" text="Tipo de Usuario" />
+                          </columns>
+                        </TableView>
+                        <JFXButton layoutX="827.0" layoutY="143.0" text="Agregar" />
+                        <JFXButton fx:id="btnEliminarUsuario" disable="true" layoutX="356.0" layoutY="360.0" text="Eliminar" />
+                        <JFXTextField fx:id="txtNombreUsuario" layoutX="15.0" layoutY="25.0" maxWidth="575.0" minWidth="322.0" prefHeight="31.0" prefWidth="575.0" promptText="Nombre del vendedor" unFocusColor="BLACK" />
+                        <JFXButton layoutX="638.0" layoutY="28.0" text="Buscar" />
+                        <JFXTextField fx:id="txtNombre" layoutX="368.0" layoutY="96.0" promptText="Usuario" />
+                        <JFXPasswordField fx:id="txtContrasenia" labelFloat="true" layoutX="536.0" layoutY="95.0" maxWidth="214.0" minWidth="185.0" prefHeight="31.0" prefWidth="185.0" promptText="Contraseña" unFocusColor="BLACK" />
+                        <JFXComboBox fx:id="cmbTipoUsuario" editable="true" layoutX="734.0" layoutY="88.0" prefHeight="25.0" prefWidth="158.0" promptText="Tipo de usuario" />
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Pane layoutY="1.0" prefHeight="78.0" prefWidth="975.0" style="-fx-background-color: #babdc4;">
+         <children>
+            <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="853.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="lblNombreUsuario" layoutX="713.0" layoutY="34.0" text="Nombre de usuario " />
+            <JFXButton fx:id="btnCerrarSesion" layoutX="14.0" layoutY="27.0"  text="Cerrar sesion" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
