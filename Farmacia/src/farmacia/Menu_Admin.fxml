@@ -32,11 +32,11 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </JFXButton>
-                        <DatePicker fx:id="dateIni" layoutX="16.0" layoutY="45.0" />
-                        <DatePicker fx:id="dateFin" layoutX="259.0" layoutY="45.0" />
+                        <JFXDatePicker fx:id="dateIni" layoutX="16.0" layoutY="45.0" />
+                        <JFXDatePicker fx:id="dateFin" layoutX="259.0" layoutY="45.0" />
                         <Label layoutX="16.0" layoutY="19.0" text="Fecha de inicio" />
                         <Label layoutX="260.0" layoutY="19.0" text="Fecha de fin" />
-                        <JFXButton layoutX="482.0" layoutY="72.0" text="Imprimir reporte" />
+                        <JFXButton onAction="#btnImprimirClicked" layoutX="482.0" layoutY="72.0" text="Imprimir reporte" />
                      </children></AnchorPane>
             </content>
           </Tab>

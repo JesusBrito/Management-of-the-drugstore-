@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechaI" class="java.lang.String"/>
+	<parameter name="fechaAct" class="java.lang.String"/>
+	<parameter name="fechaF" class="java.lang.String"/>
+	<field name="noNota" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="rfc" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apPaterno" class="java.lang.String"/>
+	<field name="apMaterno" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="0" width="265" height="38"/>
+				<textElement>
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[Reporte de ventas]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="435" y="18" width="100" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fechaAct}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="102" splitType="Stretch">
+			<textField>
+				<reportElement x="121" y="9" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fechaI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="122" y="39" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fechaF}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="9" width="82" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fecha de inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="40" width="81" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fecha final]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="64" y="2" width="49" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="0" width="31" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="155" y="2" width="35" height="20"/>
+				<textElement/>
+				<text><![CDATA[RFC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="2" width="67" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="0" width="81" height="20"/>
+				<textElement/>
+				<text><![CDATA[Paterno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="2" width="62" height="20"/>
+				<textElement/>
+				<text><![CDATA[Materno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="2" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="61" y="12" width="67" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="12" width="31" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{noNota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="12" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rfc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="12" width="67" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="12" width="81" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apPaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="12" width="81" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apMaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="505" y="12" width="50" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="11" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="17" splitType="Stretch"/>
+	</summary>
+</jasperReport>

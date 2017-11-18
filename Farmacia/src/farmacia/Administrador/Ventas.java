@@ -13,43 +13,73 @@ import javafx.beans.property.StringProperty;
  * @author jesus
  */
 public class Ventas {
-    StringProperty NoNota;
-    StringProperty Fecha;
-    StringProperty Rfc;
-    StringProperty Nombre;
-    StringProperty ApPaterno;
-    StringProperty ApMaterno;
-    StringProperty Total;
+    private StringProperty noNota;
+    private StringProperty fecha;
+    private StringProperty rfc;
+    private StringProperty nombre;
+    private StringProperty apPaterno;
+    private StringProperty apMaterno;
+    private StringProperty total;
     
     public Ventas(){}
     
     public Ventas(String noNota,String fecha,String rfc,String nombre,String paterno,String materno,String total){
-        this.NoNota=new SimpleStringProperty(noNota);
-        this.Fecha=new SimpleStringProperty(fecha);
-        this.Rfc=new SimpleStringProperty(rfc);
-        this.Nombre=new SimpleStringProperty(nombre);
-        this.ApPaterno=new SimpleStringProperty(paterno);
-        this.ApMaterno=new SimpleStringProperty(materno);
-        this.Total=new SimpleStringProperty(total);
+        this.noNota=new SimpleStringProperty(noNota);
+        this.fecha=new SimpleStringProperty(fecha);
+        this.rfc=new SimpleStringProperty(rfc);
+        this.nombre=new SimpleStringProperty(nombre);
+        this.apPaterno=new SimpleStringProperty(paterno);
+        this.apMaterno=new SimpleStringProperty(materno);
+        this.total=new SimpleStringProperty(total);
     }
+
+    public void setNoNota(StringProperty noNota) {
+        this.noNota = noNota;
+    }
+
+    public void setFecha(StringProperty fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setRfc(StringProperty rfc) {
+        this.rfc = rfc;
+    }
+
+    public void setNombre(StringProperty nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApPaterno(StringProperty apPaterno) {
+        this.apPaterno = apPaterno;
+    }
+
+    public void setApMaterno(StringProperty apMaterno) {
+        this.apMaterno = apMaterno;
+    }
+
+    public void setTotal(StringProperty total) {
+        this.total = total;
+    }
+    
+    
     public SimpleStringProperty getNoNota(){    
-        return (SimpleStringProperty) this.NoNota;
+        return (SimpleStringProperty) this.noNota;
     }
     public SimpleStringProperty getFecha(){
-        return (SimpleStringProperty) this.Fecha;
+        return (SimpleStringProperty) this.fecha;
     }
     public SimpleStringProperty getRfc(){    
-        return (SimpleStringProperty) this.Rfc;
+        return (SimpleStringProperty) this.rfc;
     }
     public SimpleStringProperty getNombre(){
-        return (SimpleStringProperty) this.Nombre;
+        return (SimpleStringProperty) this.nombre;
     }
     public SimpleStringProperty getApPaterno(){
-        return (SimpleStringProperty) this.ApPaterno;
+        return (SimpleStringProperty) this.apPaterno;
     }
     public SimpleStringProperty getApMaterno(){
-        return (SimpleStringProperty) this.ApMaterno;
+        return (SimpleStringProperty) this.apMaterno;
     }public SimpleStringProperty getTotal(){
-        return (SimpleStringProperty) this.Total;
+        return (SimpleStringProperty) this.total;
     }   
 }

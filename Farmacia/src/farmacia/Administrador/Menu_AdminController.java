@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import farmacia.Reporte.VentaReporter;
 import farmacia.Utilidades.Bd;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +41,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.controlsfx.control.Notifications;
 
 /**
@@ -57,7 +68,7 @@ public class Menu_AdminController implements Initializable {
     
     String Usuario;
     String Contrasenia;
-    
+    DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
     private Stage stagePrincipal = new Stage();;
     private AnchorPane rootPane;
     //==============TABLA DE PROVEEDORES==============    
@@ -139,7 +150,7 @@ public class Menu_AdminController implements Initializable {
            alert.setContentText("Debe elegir la fecha de inicio\n y la fecha de fin");
            alert.showAndWait();        
         }else{
-            DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
+            
             fechaInicio  = fechaI.format(formatters);
             fechaFin  = fechaF.format(formatters);
 
@@ -150,7 +161,37 @@ public class Menu_AdminController implements Initializable {
             ObtenerDatosVentas(Query);
         }
     }
-    
+    //==============IMPRIMIR REPORTE===============
+    public void btnImprimirClicked(ActionEvent event) throws IOException, JRException{
+        
+        VentaReporter ventaR;
+        List <VentaReporter> lista = new ArrayList<>();
+        
+         for (int i=0; i<=dataVentas.size()-1; i++){
+             ventaR=new VentaReporter(
+             dataVentas.get(i).getNoNota().get(),
+             dataVentas.get(i).getFecha().get(),
+             dataVentas.get(i).getRfc().get(),
+             dataVentas.get(i).getNombre().get(),
+             dataVentas.get(i).getApPaterno().get(),
+             dataVentas.get(i).getApMaterno().get(),
+             dataVentas.get(i).getTotal().get());
+             lista.add(ventaR);      
+        }
+        LocalDate hoy = LocalDate.now();
+        String fechaActual= hoy.format(formatters);
+        HashMap parametros = new HashMap();
+        parametros.put("fechaI", fechaInicio);
+        parametros.put("fechaF", fechaFin);
+        parametros.put("fechaAct", fechaActual);
+        JasperReport reporte;
+        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteVentas.jasper";
+        reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+        JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
+        JasperViewer viewer = new JasperViewer(jprint,false);
+        viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        viewer.setVisible(true);
+    }
     public void btnAgregarClicked(ActionEvent event) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("AgregarProveedor.fxml"));      
         Stage stage = new Stage();
@@ -289,7 +330,6 @@ public class Menu_AdminController implements Initializable {
         colCp.setCellValueFactory(cellData -> cellData.getValue().Cp());
         colTelefono.setCellValueFactory(cellData -> cellData.getValue().Telefono());
         colNombreCon.setCellValueFactory(cellData -> cellData.getValue().nombre());
-        cmbProveedores.setItems(dataProveedores);
         tvProveedores.setItems(dataProveedores);
         gestionarEventos();
     }
@@ -344,13 +384,13 @@ public class Menu_AdminController implements Initializable {
     }
     public void LlenarTablaVentas(){
         
-        colRfc.setCellValueFactory(cellData -> cellData.getValue().Rfc);
-        colNota.setCellValueFactory(cellData -> cellData.getValue().NoNota);
-        colNombre.setCellValueFactory(cellData -> cellData.getValue().Nombre);
-        colPaterno.setCellValueFactory(cellData -> cellData.getValue().ApPaterno);
-        colMaterno.setCellValueFactory(cellData -> cellData.getValue().ApMaterno);
-        colFecha.setCellValueFactory(cellData -> cellData.getValue().Fecha);
-        colTotal.setCellValueFactory(cellData -> cellData.getValue().Total);
+        colRfc.setCellValueFactory(cellData -> cellData.getValue().getRfc());
+        colNota.setCellValueFactory(cellData -> cellData.getValue().getNoNota());
+        colNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+        colPaterno.setCellValueFactory(cellData -> cellData.getValue().getApPaterno());
+        colMaterno.setCellValueFactory(cellData -> cellData.getValue().getApMaterno());
+        colFecha.setCellValueFactory(cellData -> cellData.getValue().getFecha());
+        colTotal.setCellValueFactory(cellData -> cellData.getValue().getTotal());
         tvVentas.setItems(dataVentas);
     }
     public void ObtenerDatosVentas(String Query) throws SQLException, ParseException, IOException{
