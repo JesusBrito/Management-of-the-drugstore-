@@ -167,6 +167,7 @@ public class Menu_AdminController implements Initializable {
         VentaReporter ventaR;
         List <VentaReporter> lista = new ArrayList<>();
         
+                
          for (int i=0; i<=dataVentas.size()-1; i++){
              ventaR=new VentaReporter(
              dataVentas.get(i).getNoNota().get(),

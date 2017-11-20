@@ -65,6 +65,6 @@ public Proveedores(String rfc,String nombreEmpresa, String apPaterno, String apM
     
     @Override
     public String toString(){
-        return this.NombreEmpresa.get();
+        return this.RFC.get();
     }   
 }

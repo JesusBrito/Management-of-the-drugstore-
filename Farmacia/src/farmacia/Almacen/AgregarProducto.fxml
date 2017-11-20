@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="599.0" prefWidth="477.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="farmacia.Almacen.AgregarProductoController">
+   <children>
+      <Label layoutX="54.0" layoutY="26.0" text="Agregar nuevo producto" />
+      <JFXTextField layoutX="105.0" layoutY="87.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Código" />
+      <JFXTextField layoutX="105.0" layoutY="143.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Nombre del producto" />
+      <JFXTextField layoutX="106.0" layoutY="198.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Precio" />
+      <JFXTextField layoutX="105.0" layoutY="261.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Existencia" />
+      <JFXTextField layoutX="107.0" layoutY="353.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Unidad" />
+      <JFXComboBox layoutX="120.0" layoutY="470.0" prefHeight="25.0" prefWidth="255.0" promptText="RFC" />
+      <Button layoutX="306.0" layoutY="548.0" mnemonicParsing="false" text="Agregar" />
+   </children>
+</AnchorPane>

@@ -11,8 +11,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Administrador.Menu_AdminController;
+import farmacia.Almacen.Menu_AlmacenController;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
+import java.text.ParseException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -43,7 +45,7 @@ public class LoginController implements Initializable {
     private JFXButton btnIniciar;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
+    private void handleButtonAction(ActionEvent event) throws IOException, SQLException, ParseException {
        Bd base = new Bd();
        String tipoUsuario;
        Usuario=txtUsuario.getText();
@@ -63,11 +65,6 @@ public class LoginController implements Initializable {
                      .position(Pos.TOP_RIGHT);
                     notificationsBuilderVended.showConfirm();
                     
-
-                    Parent root = FXMLLoader.load(getClass().getResource("Menu_Vendedor.fxml"));
-                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    stage.setTitle("Bienvenido");
-                    stage.setScene(new Scene(root));
 
                     break;
                 case "ADMINISTRADOR":
@@ -96,10 +93,18 @@ public class LoginController implements Initializable {
                      .hideAfter(Duration.seconds(4))
                      .position(Pos.TOP_RIGHT);
                     notificationsBuilderAlmacen.showConfirm();
-                    Parent Alm = FXMLLoader.load(getClass().getResource("Menu_Almacen.fxml"));
+                    
+                    
+
+                    FXMLLoader loaderAlm = new FXMLLoader(LoginController.class.getResource("Menu_Almacen.fxml"));
+                    rootPane=(AnchorPane) loaderAlm.load();
+                    Menu_AlmacenController controllerAlm = loaderAlm.getController();
+                    controllerAlm.setCredenciales(usuarioSelected);
                     Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    stageAlm.setTitle("Bienvenido");
-                    stageAlm.setScene(new Scene(Alm));    
+                    stageAlm.setTitle("Bienvenido "+ Usuario);
+                    stageAlm.setScene(new Scene(rootPane));
+                    stageAlm.show();
+                    
                     break;
                 default:
                     System.out.println("Exitoso");
