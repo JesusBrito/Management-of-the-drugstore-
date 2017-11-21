@@ -50,19 +50,17 @@
                      <children>
                         <TableView fx:id="tvNotaCompra" layoutX="42.0" layoutY="77.0" prefHeight="308.0" prefWidth="465.0">
                           <columns>
-                              <TableColumn fx:id="colProveedor" prefWidth="93.0" text="Proveedor" />
-                            <TableColumn fx:id="colNomb" prefWidth="94.0" text="Nombre" />
-                            <TableColumn fx:id="colCantidad" prefWidth="149.0" text="Cantidad" />
-                              <TableColumn prefWidth="134.0" text="Precio" />
+                              <TableColumn fx:id="colRfc" prefWidth="139.0" text="Rfc proveedor" />
+                            <TableColumn fx:id="colCodigoSol" prefWidth="147.0" text="Codigo producto" />
+                            <TableColumn fx:id="colCantidad" prefWidth="175.0" text="Cantidad" />
                           </columns>
                         </TableView>
-                        <JFXButton fx:id="btnAgregarNota" layoutX="875.0" layoutY="144.0" text="Agregar" />
-                        <JFXButton fx:id="btnEliminar" disable="true" layoutX="522.0" layoutY="315.0" text="Eliminar" />
-                        <JFXButton fx:id="btnBuscarProv" layoutX="891.0" layoutY="31.0" onAction="#btnBuscarProveedorClicked" text="Buscar" />
-                        <JFXPasswordField fx:id="txtCantidad" labelFloat="true" layoutX="776.0" layoutY="85.0" maxWidth="214.0" minWidth="185.0" prefHeight="31.0" prefWidth="185.0" promptText="Cantidad" unFocusColor="BLACK" />
+                        <JFXButton fx:id="btnAgregarNota" layoutX="875.0" layoutY="144.0" onAction="#btnAgregarSolicitudClicked" text="Agregar" />
+                        <JFXButton fx:id="btnEliminar" disable="true" layoutX="522.0" layoutY="315.0" onAction="#btnEliminarSolicitudClicked" text="Eliminar" />
                         <JFXComboBox fx:id="cmbProducto" layoutX="555.0" layoutY="83.0" prefHeight="25.0" prefWidth="158.0" promptText="Poducto" />
                         <JFXButton fx:id="btnGenerarNota" layoutX="514.0" layoutY="359.0" text="Generar nota de compra" />
-                        <JFXComboBox fx:id="cmbRfc" layoutX="544.0" layoutY="28.0" prefHeight="25.0" prefWidth="330.0" promptText="RFC Proveedor" />
+                        <JFXComboBox fx:id="cmbRfc" layoutX="575.0" layoutY="27.0" prefHeight="25.0" prefWidth="330.0" promptText="RFC Proveedor" />
+                        <JFXTextField fx:id="txtCantidad" labelFloat="true" layoutX="775.0" layoutY="83.0" promptText="Cantidad" />
                      </children></AnchorPane>
               </content>
             </Tab>

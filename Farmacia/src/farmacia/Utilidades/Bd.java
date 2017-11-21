@@ -72,7 +72,23 @@ public class Bd {
             //ErrorMessage("MySQL Error", "Ha ocurrido un error en la Base de Datos", "No se pudo seleccionar información desde la Base de Datos.");
         }
         return elementos;
-    }    
+    } 
+    public int SeleccionarExist(String query) throws SQLException, SQLException{
+        int elemento = 0;
+        Statement cmd = conexion.createStatement();
+        ResultSet res = cmd.executeQuery(query);
+        int clm = res.getMetaData().getColumnCount();
+        while(res.next()){               
+                String[] data = new String[res.getMetaData().getColumnCount()];  
+                for (int i = 0; i<=clm-1; i++){   
+                   elemento = res.getInt(res.getMetaData().getColumnName(i+1));
+                }
+            }
+            res.close();
+            cmd.close();
+        return elemento;
+    }
+    
     public boolean Eliminar (String query){
         try{
             conexion.setAutoCommit(false);
@@ -88,8 +104,10 @@ public class Bd {
         }
     }
     public boolean Actualizar (String Query) throws SQLException{
+        conexion.setAutoCommit(false);
         try(PreparedStatement ps = conexion.prepareStatement(Query)){
-            ps.executeQuery(); 
+            ps.executeQuery();
+            conexion.commit();
            return true;    
         }catch (SQLException  ex){
             System.out.println(ex);

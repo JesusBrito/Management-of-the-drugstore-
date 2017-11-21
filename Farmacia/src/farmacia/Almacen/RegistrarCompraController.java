@@ -95,7 +95,7 @@ public class RegistrarCompraController implements Initializable {
             .position(Pos.TOP_RIGHT);
             notificationsBuilderAlmacen.showConfirm();                  
         }else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+           Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("Error");
            alert.setHeaderText("Error al registrar la compra");
            alert.setContentText("Hubo un error al realizar el registro");
@@ -116,14 +116,47 @@ public class RegistrarCompraController implements Initializable {
                 .position(Pos.TOP_RIGHT);
                 notificationsBuilderAlmacen.showConfirm();                  
             }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+               Alert alert = new Alert(Alert.AlertType.ERROR);
                alert.setTitle("Error");
                alert.setHeaderText("Error al registrar el detalle");
                alert.setContentText("Hubo un error al realizar el registro");
                alert.showAndWait();
-            }  
+            }
+            Query="Select EXISTENCIA FROM ELENA.FARMACIA WHERE CODIGO_PRODUCTO= '"+Codigo+"'";
+            int existencia= db.SeleccionarExist(Query);
+            int nuevaExistencia=existencia+ Integer.parseInt(Cantidad);
+            Query="UPDATE ELENA.FARMACIA SET EXISTENCIA= "+nuevaExistencia+" WHERE CODIGO_PRODUCTO ='"+Codigo+"'";
+            if(db.Actualizar(Query)){
+                Notifications notificationsBuilderAlmacen = Notifications.create()
+                .title("Actualizacion exitosa")               
+                .text("El almacen se ha actualizado correctamente")
+                .hideAfter(Duration.seconds(4))
+                .position(Pos.TOP_RIGHT);
+                notificationsBuilderAlmacen.showConfirm(); 
+            }else{
+               Alert alert = new Alert(Alert.AlertType.ERROR);
+               alert.setTitle("Error");
+               alert.setHeaderText("Error al actualizar el almacen");
+               alert.setContentText("Hubo un error al realizar  la actualización");
+               alert.showAndWait();
+            }       
         }
+        //limpiar todos los valores
+        txtNoFactura.setEditable(true);
+        dataDetalle.clear();
+        lblTotal.setText("");
+        txtNoFactura.setText("");
+        noFactura="";
+        fechaFact="";
+        Rfc="";
+        Total="";
+        Cantidad="";
+        Subtotal="";
+        PrecioC="";
+        Codigo="";
         contador=0;
+        cmbRFC.setDisable(false);
+        dtFecha.setDisable(false);
     }
     public void btnAgregarClicked(ActionEvent event) throws SQLException{
         obtenerDatosProducto();
@@ -161,7 +194,8 @@ public class RegistrarCompraController implements Initializable {
             ));
         llenarTablaDetalles();
         txtNoFactura.setEditable(false);
-        cmbRFC.setEditable(false);
+        cmbRFC.setDisable(true);
+        dtFecha.setDisable(true);
         dtFecha.setEditable(false);
         txtCantidad.setText("");
         txtPrecio.setText("");
@@ -174,7 +208,7 @@ public class RegistrarCompraController implements Initializable {
         lblTotal.setText(Total);
     }
     
-    public void LlenarComboProveedores(){
+    public void LlenarComboProductos(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         cmbCodigo.setItems(dataProductos);
         
@@ -205,7 +239,7 @@ public class RegistrarCompraController implements Initializable {
         LlenarComboProveedores();
     }
         
-    public void LlenarComboProductos(){
+    public void LlenarComboProveedores(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         cmbRFC.setItems(dataProveedores);
         
