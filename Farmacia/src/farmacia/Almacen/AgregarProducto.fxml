@@ -7,16 +7,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="599.0" prefWidth="477.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="farmacia.Almacen.AgregarProductoController">
+<AnchorPane id="AnchorPane" prefHeight="599.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.Almacen.AgregarProductoController">
    <children>
       <Label layoutX="54.0" layoutY="26.0" text="Agregar nuevo producto" />
-      <JFXTextField layoutX="105.0" layoutY="87.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Código" />
-      <JFXTextField layoutX="105.0" layoutY="143.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Nombre del producto" />
-      <JFXTextField layoutX="106.0" layoutY="198.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Precio" />
-      <JFXTextField layoutX="105.0" layoutY="261.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Existencia" />
-      <JFXTextField layoutX="107.0" layoutY="353.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Unidad" />
-      <JFXComboBox layoutX="120.0" layoutY="470.0" prefHeight="25.0" prefWidth="255.0" promptText="RFC" />
-      <Button layoutX="306.0" layoutY="548.0" mnemonicParsing="false" text="Agregar" />
+      <JFXTextField fx:id="txtCodigoA" layoutX="132.0" layoutY="80.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Código de producto" />
+      <JFXTextField fx:id="txtNombreA" layoutX="133.0" layoutY="128.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Nombre del producto" />
+      <JFXTextField fx:id="txtUnidadA" layoutX="130.0" layoutY="186.0" maxWidth="354.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Unidad" />
+      <JFXButton fx:id="btnCancelar" layoutX="76.0" layoutY="548.0" onAction="#btnCerrarClicked" text="Cerrar" />
+      <JFXButton layoutX="369.0" layoutY="548.0" onAction="#btnAgregarProductoClicked" text="Agregar" />
+      <JFXTextField fx:id="txtCodigoAlmacen" layoutX="136.0" layoutY="300.0" maxWidth="255.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Código de almacén" />
+      <JFXTextField fx:id="txtPrecioVenta" layoutX="134.0" layoutY="357.0" maxWidth="255.0" minWidth="255.0" prefHeight="31.0" prefWidth="255.0" promptText="Precio venta" />
    </children>
 </AnchorPane>

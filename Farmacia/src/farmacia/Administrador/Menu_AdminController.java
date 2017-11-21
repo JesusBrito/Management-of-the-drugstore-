@@ -165,9 +165,7 @@ public class Menu_AdminController implements Initializable {
     public void btnImprimirClicked(ActionEvent event) throws IOException, JRException{
         
         VentaReporter ventaR;
-        List <VentaReporter> lista = new ArrayList<>();
-        
-                
+        List <VentaReporter> lista = new ArrayList<>();                
          for (int i=0; i<=dataVentas.size()-1; i++){
              ventaR=new VentaReporter(
              dataVentas.get(i).getNoNota().get(),

@@ -18,18 +18,16 @@ public class Almacen {
     private StringProperty Precio;
     private StringProperty Existencia;
     private StringProperty Unidad;
-    private StringProperty Rfc;
-    private StringProperty Proveedor;    
+  
     public Almacen(){}
-    public Almacen(String Codigo, String Nombre, String Precio, String Existencia, String Unidad, String Rfc, String Proveedor) {
+    public Almacen(String Codigo, String Nombre, String Precio, String Existencia, String Unidad) {
         this.Codigo = new SimpleStringProperty(Codigo);
         this.Nombre = new SimpleStringProperty(Nombre);
         this.Precio = new SimpleStringProperty(Precio);
         this.Existencia = new SimpleStringProperty (Existencia);
         this.Unidad = new SimpleStringProperty (Unidad);
-        this.Rfc = new SimpleStringProperty(Rfc);
-        this.Proveedor = new SimpleStringProperty(Proveedor);
     }
+
 
     public SimpleStringProperty getCodigo() {
         return (SimpleStringProperty) this.Codigo;
@@ -49,14 +47,6 @@ public class Almacen {
 
     public SimpleStringProperty getUnidad() {
         return (SimpleStringProperty) this.Unidad;
-    }
-
-    public SimpleStringProperty getRfc() {
-        return (SimpleStringProperty) this.Rfc;
-    }
-
-    public SimpleStringProperty getProveedor() {
-        return (SimpleStringProperty) this.Proveedor;
     }
     @Override
     public String toString(){

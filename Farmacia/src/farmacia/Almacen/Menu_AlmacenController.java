@@ -26,11 +26,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -50,7 +57,7 @@ public class Menu_AlmacenController implements Initializable {
     //===============
     @FXML private Label lblNombreUsuario;
     @FXML private JFXTextField txtCveProducto;
-    @FXML private JFXComboBox cbRfc;
+    @FXML private JFXTextField txtNombreMed;
     @FXML private JFXComboBox cmbRfc;
     @FXML private JFXComboBox cmbProducto;
     @FXML private JFXButton btnAgregarStock;
@@ -61,8 +68,6 @@ public class Menu_AlmacenController implements Initializable {
     @FXML private TableColumn<Almacen, String> colPrecio;
     @FXML private TableColumn<Almacen, String> colExistencia;
     @FXML private TableColumn<Almacen, String> colUnidad;
-    @FXML private TableColumn<Almacen, String> colRfc;
-    @FXML private TableColumn<Almacen, String> colProv;
     ObservableList<Almacen> dataAlmacen = FXCollections.observableArrayList();
     ArrayList<String[]> almacen = new ArrayList<>();
     
@@ -72,42 +77,51 @@ public class Menu_AlmacenController implements Initializable {
     @FXML
     public void btnBuscarClicked(ActionEvent event) throws IOException, SQLException{
        String codigo= txtCveProducto.getText();
-       String Rfc= cbRfc.getValue().toString();
+       String nombre= txtNombreMed.getText();
        if(codigo.equals("")){
-          Query="SELECT ELENA.FARMACIA.CODIGO, ELENA.FARMACIA.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA, \n" +
-"                ELENA.FARMACIA.UNIDAD, ELENA.PROVEEDORES.RFC, ELENA.PROVEEDORES.NOMBRE_PROVEEDOR FROM ELENA.FARMACIA \n" +
-"                JOIN ELENA.DETALLE_COMPRAS ON ELENA.FARMACIA.CODIGO=ELENA.DETALLE_COMPRAS.CODIGO \n" +
-"                JOIN ELENA.COMPRA_MEDICAMENTOS ON ELENA.DETALLE_COMPRAS.NO_FACTURA=ELENA.COMPRA_MEDICAMENTOS.NO_FACTURA \n" +
-"                AND ELENA.DETALLE_COMPRAS.NO_FACTURA= ELENA.COMPRA_MEDICAMENTOS.NO_FACTURA\n" +
-"                JOIN ELENA.PROVEEDORES ON ELENA.COMPRA_MEDICAMENTOS.RFC=ELENA.PROVEEDORES.RFC WHERE  ELENA.PROVEEDORES.RFC= '"+Rfc+"'";
+          Query="SELECT ELENA.FARMACIA.CODIGO, ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA,ELENA.PRODUCTOS.UNIDAD" +
+"                FROM ELENA.FARMACIA JOIN ELENA.PRODUCTOS ON ELENA.FARMACIA.CODIGO_PRODUCTO=ELENA.PRODUCTOS.CODIGO_PRODUCTO \n" +
+"                WHERE  ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO LIKE '"+nombre+"%'";
             obtenerDatosAlmacen(Query); 
-       }else if(Rfc.equals("")){
-            Query="SELECT ELENA.FARMACIA.CODIGO, ELENA.FARMACIA.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA, \n" +
-"                ELENA.FARMACIA.UNIDAD, ELENA.PROVEEDORES.RFC, ELENA.PROVEEDORES.NOMBRE_PROVEEDOR FROM ELENA.FARMACIA \n" +
-"                JOIN ELENA.DETALLE_COMPRAS ON ELENA.FARMACIA.CODIGO=ELENA.DETALLE_COMPRAS.CODIGO \n" +
-"                JOIN ELENA.COMPRA_MEDICAMENTOS ON ELENA.DETALLE_COMPRAS.NO_FACTURA=ELENA.COMPRA_MEDICAMENTOS.NO_FACTURA \n" +
-"                AND ELENA.DETALLE_COMPRAS.NO_FACTURA= ELENA.COMPRA_MEDICAMENTOS.NO_FACTURA\n" +
-"                JOIN ELENA.PROVEEDORES ON ELENA.COMPRA_MEDICAMENTOS.RFC=ELENA.PROVEEDORES.RFC WHERE  ELENA.FARMACIA.CODIGO= '"+codigo+"'";
+       }else if(nombre.equals("")){
+            Query="SELECT ELENA.FARMACIA.CODIGO AS CODIGO_ALMACEN, ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA,ELENA.PRODUCTOS.UNIDAD "
+                    + "FROM ELENA.FARMACIA JOIN ELENA.PRODUCTOS ON ELENA.FARMACIA.CODIGO_PRODUCTO=ELENA.PRODUCTOS.CODIGO_PRODUCTO WHERE ELENA.FARMACIA.CODIGO ='"+codigo+"'";
             obtenerDatosAlmacen(Query);
        }else{
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
             alert2.setHeaderText("Error en los campos de busqueda ");
-            alert2.setContentText("Debe insetar el RFC o el código de producto");
+            alert2.setContentText("Debe insetar sólo uno de los dos campos");
             alert2.showAndWait();    
        }
     }
     @FXML
-    public void btnActualizarClicked(ActionEvent event) throws IOException{
-    
+    public void btnActualizarClicked(ActionEvent event) throws IOException, SQLException{
+            Query="SELECT ELENA.FARMACIA.CODIGO AS CODIGO_ALMACEN, ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA,ELENA.PRODUCTOS.UNIDAD "
+                    + "FROM ELENA.FARMACIA JOIN ELENA.PRODUCTOS ON ELENA.FARMACIA.CODIGO_PRODUCTO=ELENA.PRODUCTOS.CODIGO_PRODUCTO";
+            obtenerDatosAlmacen(Query);
     }
     @FXML
     public void btnAgregarProductoClicked(ActionEvent event) throws IOException{
-    
+      Parent root = FXMLLoader.load(getClass().getResource("AgregarProducto.fxml"));      
+        Stage stage = new Stage();
+        stage.setTitle("Agregar nuevo producto");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
+        stage.show();   
     }
     @FXML
     public void btnAgregarStockClicked(ActionEvent event) throws IOException{
-    
+        Parent root = FXMLLoader.load(getClass().getResource("RegistrarCompra.fxml"));      
+        Stage stage = new Stage();
+        stage.setTitle("Registrar Compra");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
+        stage.show();
     }
     @FXML
     public void btnImprimirReporteClicked(ActionEvent event) throws IOException{
@@ -137,9 +151,7 @@ public class Menu_AlmacenController implements Initializable {
                     almacen.get(i)[1],
                     almacen.get(i)[2],
                     almacen.get(i)[3],
-                    almacen.get(i)[4],
-                    almacen.get(i)[5],
-                    almacen.get(i)[6]
+                    almacen.get(i)[4]
             ));
         }
         db.cerrarConexion();
@@ -156,9 +168,7 @@ public class Menu_AlmacenController implements Initializable {
                     almacen.get(i)[1],
                     almacen.get(i)[2],
                     almacen.get(i)[3],
-                    almacen.get(i)[4],
-                    almacen.get(i)[5],
-                    almacen.get(i)[6]
+                    almacen.get(i)[4]
             ));
         }
         db.cerrarConexion();
@@ -171,8 +181,6 @@ public class Menu_AlmacenController implements Initializable {
         colPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecio());
         colExistencia.setCellValueFactory(cellData -> cellData.getValue().getExistencia());
         colUnidad.setCellValueFactory(cellData -> cellData.getValue().getUnidad());
-        colRfc.setCellValueFactory(cellData -> cellData.getValue().getRfc());
-        colProv.setCellValueFactory(cellData -> cellData.getValue().getProveedor());
         tvAlmacen.setItems(dataAlmacen);
         gestionarEventos();
         
@@ -183,7 +191,6 @@ public class Menu_AlmacenController implements Initializable {
     }
     public void LlenarComboProveedores(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
-        cbRfc.setItems(dataProveedores);
         cmbRfc.setItems(dataProveedores);
         
     }
@@ -222,12 +229,8 @@ public class Menu_AlmacenController implements Initializable {
         System.out.println(this.Usuario+" Set 3 "+this.Contrasenia);
         lblNombreUsuario.setText(this.Usuario);
         try {
-            Query="SELECT ELENA.FARMACIA.CODIGO, ELENA.FARMACIA.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA, \n" +
-"                ELENA.FARMACIA.UNIDAD, ELENA.PROVEEDORES.RFC, ELENA.PROVEEDORES.NOMBRE_PROVEEDOR FROM ELENA.FARMACIA \n" +
-"                JOIN ELENA.DETALLE_COMPRAS ON ELENA.FARMACIA.CODIGO=ELENA.DETALLE_COMPRAS.CODIGO \n" +
-"                JOIN ELENA.COMPRA_MEDICAMENTOS ON ELENA.DETALLE_COMPRAS.NO_FACTURA=ELENA.COMPRA_MEDICAMENTOS.NO_FACTURA \n" +
-"                AND ELENA.DETALLE_COMPRAS.NO_FACTURA= ELENA.COMPRA_MEDICAMENTOS.NO_FACTURA\n" +
-"                JOIN ELENA.PROVEEDORES ON ELENA.COMPRA_MEDICAMENTOS.RFC=ELENA.PROVEEDORES.RFC";
+            Query="SELECT ELENA.FARMACIA.CODIGO AS CODIGO_ALMACEN, ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA,ELENA.PRODUCTOS.UNIDAD "
+                    + "FROM ELENA.FARMACIA JOIN ELENA.PRODUCTOS ON ELENA.FARMACIA.CODIGO_PRODUCTO=ELENA.PRODUCTOS.CODIGO_PRODUCTO";
             obtenerDatosAlmacen(Query);
             
             Query="SELECT * FROM ELENA.PROVEEDORES";

@@ -19,30 +19,28 @@
                      <children>
                         <TableView fx:id="tvAlmacen" layoutX="17.0" layoutY="93.0" prefHeight="263.0" prefWidth="998.0">
                           <columns>
-                              <TableColumn fx:id="colCodigo" prefWidth="77.0" text="Codigo" />
-                              <TableColumn fx:id="colNombre" prefWidth="170.0" text="Nombre" />
-                              <TableColumn fx:id="colPrecio" prefWidth="149.0" text="Precio" />
-                              <TableColumn fx:id="colExistencia" prefWidth="103.0" text="Existencia" />
-                              <TableColumn fx:id="colUnidad" prefWidth="136.0" text="Unidad" />
-                              <TableColumn fx:id="colRfc" prefWidth="177.0" text="Rfc " />
-                              <TableColumn fx:id="colProv" prefWidth="195.0" text="Proveedor" />
+                              <TableColumn fx:id="colCodigo" prefWidth="117.0" text="Codigo" />
+                              <TableColumn fx:id="colNombre" prefWidth="193.0" text="Nombre" />
+                              <TableColumn fx:id="colPrecio" prefWidth="281.0" text="Precio" />
+                              <TableColumn fx:id="colExistencia" prefWidth="163.0" text="Existencia" />
+                              <TableColumn fx:id="colUnidad" prefWidth="237.0" text="Unidad" />
                           </columns>
                         </TableView>
-                        <JFXButton fx:id="btnProductoNuevo" layoutX="80.0" layoutY="390.0" text="Agregar producto nuevo">
+                        <JFXButton fx:id="btnProductoNuevo" layoutX="80.0" layoutY="390.0" onAction="#btnAgregarProductoClicked" text="Agregar producto nuevo">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </JFXButton>
-                        <JFXButton fx:id="btnAgregarStock" disable="true" layoutX="271.0" layoutY="391.0" text="Agregar Stock" />
-                        <JFXButton fx:id="btnBuscar" layoutX="701.0" layoutY="45.0" onAction="#btnBuscarClicked" text="Buscar">
+                        <JFXButton fx:id="btnAgregarStock" layoutX="271.0" layoutY="391.0" onAction="#btnAgregarStockClicked" text="Agregar Stock" />
+                        <JFXButton fx:id="btnBuscar" layoutX="699.0" layoutY="38.0" onAction="#btnBuscarClicked" text="Buscar">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </JFXButton>
                         <JFXTextField fx:id="txtCveProducto" layoutX="79.0" layoutY="38.0" maxWidth="648.0" minWidth="196.0" prefHeight="31.0" prefWidth="211.0" promptText="Clave del producto" />
-                        <JFXButton fx:id="btnActualizarReg" layoutX="796.0" layoutY="46.0" text="Actualizar registros" />
-                        <JFXComboBox fx:id="cbRfc" editable="true" layoutX="424.0" layoutY="41.0" prefHeight="25.0" prefWidth="221.0" promptText="Rfc Proveedor" />
+                        <JFXButton fx:id="btnActualizarReg" layoutX="796.0" layoutY="46.0" onAction="#btnActualizarClicked" text="Actualizar registros" />
                         <JFXButton fx:id="btnImprimirReporte" layoutX="892.0" layoutY="404.0" text="Imprimir reporte" />
+                        <JFXTextField fx:id="txtNombreMed" layoutX="357.0" layoutY="38.0" maxWidth="288.0" minWidth="288.0" prefHeight="31.0" prefWidth="288.0" promptText="Nombre medicamento" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -60,7 +58,7 @@
                         </TableView>
                         <JFXButton fx:id="btnAgregarNota" layoutX="875.0" layoutY="144.0" text="Agregar" />
                         <JFXButton fx:id="btnEliminar" disable="true" layoutX="522.0" layoutY="315.0" text="Eliminar" />
-                        <JFXButton fx:id="btnBuscarProv" onAction="#btnBuscarProveedorClicked" layoutX="891.0" layoutY="31.0" text="Buscar" />
+                        <JFXButton fx:id="btnBuscarProv" layoutX="891.0" layoutY="31.0" onAction="#btnBuscarProveedorClicked" text="Buscar" />
                         <JFXPasswordField fx:id="txtCantidad" labelFloat="true" layoutX="776.0" layoutY="85.0" maxWidth="214.0" minWidth="185.0" prefHeight="31.0" prefWidth="185.0" promptText="Cantidad" unFocusColor="BLACK" />
                         <JFXComboBox fx:id="cmbProducto" layoutX="555.0" layoutY="83.0" prefHeight="25.0" prefWidth="158.0" promptText="Poducto" />
                         <JFXButton fx:id="btnGenerarNota" layoutX="514.0" layoutY="359.0" text="Generar nota de compra" />
