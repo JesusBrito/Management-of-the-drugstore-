@@ -37,6 +37,6 @@ public class Producto {
     
     @Override
     public String toString(){
-        return this.Codigo.get();
+        return this.Codigo.get()+"-"+this.Nombre.get();
     } 
 }

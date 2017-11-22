@@ -1,59 +1,66 @@
 
 package farmacia.Venta;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Clientes extends farmacia.Utilidades.Persona {
-    private String Correo;
+    private StringProperty Correo;
     
-    /*
+    
     public Clientes(){}
-    public Clientes(String rfc,String nombre, String apPaterno, String apMaterno, String calle, String colonia , int numero,
-            String ciudad, String delegacion, int cp, String correo){
-        this.RFC=rfc;
-        this.Nombre=nombre;
-        this.ApPaterno=apPaterno;
-        this.ApMaterno=apMaterno;
-        this.Calle=calle;
-        this.Colonia=colonia;
-        this.Numero=numero;
-        this.Ciudad=ciudad;
-        this.Delegacion=delegacion;
-        this.Cp=cp;
+    public Clientes(String rfc,String nombre, String apPaterno, String apMaterno, String calle, String colonia , String numero,
+            String ciudad, String delegacion, String cp, String correo){
+        this.RFC=new SimpleStringProperty(rfc);
+        this.Nombre=new SimpleStringProperty(nombre);
+        this.ApPaterno=new SimpleStringProperty(apPaterno);
+        this.ApMaterno=new SimpleStringProperty(apMaterno);
+        this.Calle=new SimpleStringProperty(calle);
+        this.Colonia=new SimpleStringProperty(colonia);
+        this.Numero=new SimpleStringProperty(numero);
+        this.Ciudad=new SimpleStringProperty(ciudad);
+        this.Delegacion=new SimpleStringProperty(delegacion);
+        this.Cp=new SimpleStringProperty(cp);
+        this.Correo=new SimpleStringProperty(correo);
     }
     
-    public String rfc(){
-        return this.RFC;
+    public SimpleStringProperty getRfc(){
+        return(SimpleStringProperty) this.RFC;
     }
-    public String nombre(){
-        return this.Nombre;
+    public SimpleStringProperty getNombre(){
+        return(SimpleStringProperty) this.Nombre;
     }
-    public String apPaterno(){
-        return this.ApPaterno;
+    public SimpleStringProperty getApPaterno(){
+        return (SimpleStringProperty)this.ApPaterno;
     }
-    public String apMaterno(){
-        return this.ApMaterno;
+    public SimpleStringProperty getApMaterno(){
+        return(SimpleStringProperty) this.ApMaterno;
     }
-    public String Calle(){
-        return this.Calle;
+    public SimpleStringProperty getCalle(){
+        return(SimpleStringProperty) this.Calle;
     }
-    public String Colonia(){
-        return this.Colonia;
+    public SimpleStringProperty getColonia(){
+        return(SimpleStringProperty) this.Colonia;
     }
-    public int Numero(){
-        return this.Numero;
+    public SimpleStringProperty getNumero(){
+        return(SimpleStringProperty) this.Numero;
     }
-    public String Ciudad() {
-        return this.Ciudad;
+    public SimpleStringProperty getCiudad() {
+        return(SimpleStringProperty) this.Ciudad;
     }
-    public String Delegacion() {
-        return this.Delegacion;
+    public SimpleStringProperty getDelegacion() {
+        return(SimpleStringProperty) this.Delegacion;
     }
-    public int Cp() {
-        return this.Cp;
+    public SimpleStringProperty getCp() {
+        return(SimpleStringProperty) this.Cp;
     }
-    public String Correo() {
-        return this.Correo;
+    public SimpleStringProperty getCorreo() {
+        return (SimpleStringProperty)this.Correo;
     }
-*/
+    @Override
+    public String toString(){
+        return this.RFC.get();
+    } 
 }
 
 

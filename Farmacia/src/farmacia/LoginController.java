@@ -13,12 +13,12 @@ import com.jfoenix.controls.JFXTextField;
 import farmacia.Administrador.Menu_AdminController;
 import farmacia.Almacen.Menu_AlmacenController;
 import farmacia.Utilidades.Usuario;
+import farmacia.Venta.Menu_VendedorController;
 import java.io.IOException;
 import java.text.ParseException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
@@ -65,7 +65,15 @@ public class LoginController implements Initializable {
                      .position(Pos.TOP_RIGHT);
                     notificationsBuilderVended.showConfirm();
                     
-
+                    FXMLLoader loaderV = new FXMLLoader(LoginController.class.getResource("Menu_Vendedor.fxml"));
+                    rootPane=(AnchorPane) loaderV.load();
+                    Menu_VendedorController controllerV = loaderV.getController();
+                    controllerV.setCredenciales(usuarioSelected);
+                    Stage stageV = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    stageV.setTitle("Bienvenido "+ Usuario);
+                    stageV.setScene(new Scene(rootPane));
+                    stageV.show();
+                    
                     break;
                 case "ADMINISTRADOR":
                     System.out.println("Exitoso");

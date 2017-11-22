@@ -88,6 +88,21 @@ public class Bd {
             cmd.close();
         return elemento;
     }
+    public int SeleccionarNota(String query) throws SQLException, SQLException{
+        int elemento = 0;
+        Statement cmd = conexion.createStatement();
+        ResultSet res = cmd.executeQuery(query);
+        int clm = res.getMetaData().getColumnCount();
+        while(res.next()){               
+                String[] data = new String[res.getMetaData().getColumnCount()];  
+                for (int i = 0; i<=clm-1; i++){   
+                   elemento = res.getInt(res.getMetaData().getColumnName(i+1));
+                }
+            }
+            res.close();
+            cmd.close();
+        return elemento;
+    }
     
     public boolean Eliminar (String query){
         try{

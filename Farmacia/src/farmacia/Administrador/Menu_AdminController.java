@@ -501,7 +501,5 @@ public class Menu_AdminController implements Initializable {
             "VENDEDOR",
             "ALMACEN"
         ); 
-    }      
-
-    
+    }         
 }

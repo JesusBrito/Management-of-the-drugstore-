@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package farmacia.Administrador;
+package farmacia.Venta;
 
 import com.jfoenix.controls.JFXTextField;
+import farmacia.Administrador.Proveedores;
 import farmacia.Utilidades.Bd;
 import java.net.URL;
 import java.sql.SQLException;
@@ -24,35 +25,36 @@ import org.controlsfx.control.Notifications;
  *
  * @author jesus
  */
-public class EditarProveedorController implements Initializable {
+public class EditarClienteController implements Initializable {
+
     String Usuario;
     String Contrasenia;
     String Query;
-    /**
-     * Initializes the controller class.
-     */
-    Proveedores proveedor;
-    String rfc="null", empresa="null",paterno="null",nombre="null",colonia="null",
-            calle="null",materno="null",telefono="null",delegacion="null",ciudad="null";
+    Clientes cliente;
+    
+    String rfc="null",paterno="null",nombre="null",colonia="null",
+            calle="null",materno="null",correo="null",delegacion="null",ciudad="null";
     int numero=0,cp=0;
     @FXML public JFXTextField txtRfc;
-    @FXML public JFXTextField txtEmpresa;
-    @FXML public JFXTextField txtPaterno;
     @FXML public JFXTextField txtNombre;
+    @FXML public JFXTextField txtPaterno;
+    @FXML public JFXTextField txtMaterno;
+    @FXML public JFXTextField txtCalle;
     @FXML public JFXTextField txtColonia;
     @FXML public JFXTextField txtNumero;
-    @FXML public JFXTextField txtCalle;
-    @FXML public JFXTextField txtMaterno;
+    @FXML public JFXTextField txtCiudad; 
+    @FXML public JFXTextField txtDelegacion; 
     @FXML public JFXTextField txtCp;
-    @FXML public JFXTextField txtTelefono;
-    @FXML public JFXTextField txtDelegacion;
-    @FXML public JFXTextField txtCiudad;   
+    @FXML public JFXTextField txtCorreo; 
     @FXML public Button btnCancelar;
     
-    @FXML 
+    @FXML
+    public void btnCerrarClicked(){
+        Cerrar();
+    }
+    @FXML
     public void btnActualizarClicked() throws SQLException{
         rfc=txtRfc.getText();
-        empresa=txtEmpresa.getText();
         nombre=txtNombre.getText();
         paterno=(txtPaterno.getText().length()>0) ? txtPaterno.getText():"null";
         materno=(txtMaterno.getText().length()>0) ? txtMaterno.getText():"null";
@@ -62,10 +64,10 @@ public class EditarProveedorController implements Initializable {
         ciudad=txtCiudad.getText();
         delegacion=txtDelegacion.getText();
         cp=Integer.parseInt(txtCp.getText());
-        telefono=(txtTelefono.getText().length()>0)? txtTelefono.getText() :"null";
+        correo=(txtCorreo.getText().length()>0)? txtCorreo.getText() :"null";
                 
-        if(empresa.equals("")|| nombre.equals("") || calle.equals("")||
-                colonia.equals("")|| ciudad.equals("")|| telefono.equals("")){
+        if(nombre.equals("") || calle.equals("")||
+                colonia.equals("")|| ciudad.equals("")|| correo.equals("")){
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
             alert2.setHeaderText("Campos llenados incorrectamente");
@@ -73,16 +75,30 @@ public class EditarProveedorController implements Initializable {
             alert2.showAndWait();
             
         }else{
-            Query="UPDATE ELENA.PROVEEDORES SET NOMBRE_PROVEEDOR='"+empresa+"', \n" +
-            "AP_PATERNO='"+paterno+"', AP_MATERNO='"+materno+"', "
-            + "CALLE='"+calle+"', COLONIA='"+colonia+"', NUMERO="+numero+", "
-            + "CIUDAD='"+ciudad+"', DELEGACION='"+delegacion+"',"
-            + " CP="+cp+", TELEFONO_CONTACTO='"+telefono+"', NOMBRE_CONTACTO='"+nombre+"'"
-            + " where RFC='"+rfc+"'";
+            Query="UPDATE ELENA.CLIENTES Set NOMBRE='"+nombre+"',AP_PATERNO='"+paterno+"',"
+            + "AP_MATERNO='"+materno+"',CALLE='"+calle+"',COLONIA='"+colonia+"',NUMERO="+numero+","
+            + "CIUDAD='"+ciudad+"',DELEGACION='"+delegacion+"',CP="+cp+",CORREO_ELECTRONICO='"+correo+"' "
+            + "where RFC='"+rfc+"'";
             Actualizar(Query);  
+
         }                
     }
-    
+    public void setCliente(Clientes clientSelected, String usr, String pass){
+        this.cliente=clientSelected;
+        this.Usuario=usr;
+        this.Contrasenia=pass;
+        txtRfc.setText(this.cliente.getRfc().getValue());
+        txtNombre.setText(this.cliente.getNombre().getValue());
+        txtPaterno.setText(this.cliente.getApPaterno().getValue());
+        txtMaterno.setText(this.cliente.getApMaterno().getValue());
+        txtCalle.setText(this.cliente.getCalle().getValue());
+        txtColonia.setText(this.cliente.getColonia().getValue()); 
+        txtNumero.setText(this.cliente.getNumero().getValue());
+        txtCiudad.setText(this.cliente.getCiudad().getValue()); 
+        txtDelegacion.setText(this.cliente.getDelegacion().getValue());
+        txtCp.setText(this.cliente.getCp().getValue());
+        txtCorreo.setText(this.cliente.getCorreo() .getValue());
+    }
     private void Actualizar(String Query) throws SQLException{
         Bd db = new Bd();
         db.Conectar(this.Usuario, this.Contrasenia);
@@ -90,7 +106,7 @@ public class EditarProveedorController implements Initializable {
         if(db.Actualizar(Query)==true){
             Notifications notificationsBuilderAlmacen = Notifications.create()
             .title("Actualizacion exitosa")           
-            .text("El proveedor "+empresa+" se ha actualizado correctamente")
+            .text("El cliente con rfc "+rfc+" se ha actualizado correctamente")
             .hideAfter(Duration.seconds(4))
             .position(Pos.TOP_RIGHT);
             notificationsBuilderAlmacen.showInformation();
@@ -104,34 +120,13 @@ public class EditarProveedorController implements Initializable {
         }
         db.cerrarConexion();
     }
-    public void btnCerrarClicked(){
-        Cerrar();
-    }
-    
-    public void setProveedor(Proveedores provSelected, String usr, String pass){
-        this.proveedor=provSelected;
-        this.Usuario=usr;
-        this.Contrasenia=pass;
-        txtRfc.setText(this.proveedor.rfc().getValue());
-        txtEmpresa.setText(this.proveedor.nombreEmpresa().getValue());
-        txtNombre.setText(this.proveedor.nombre().getValue());
-        txtPaterno.setText(this.proveedor.apPaterno().getValue());
-        txtMaterno.setText(this.proveedor.apMaterno().getValue());
-        txtCalle.setText(this.proveedor.Calle().getValue());
-        txtColonia.setText(this.proveedor.Colonia().getValue()); 
-        txtNumero.setText(this.proveedor.Numero().getValue());
-        txtCiudad.setText(this.proveedor.Ciudad().getValue()); 
-        txtDelegacion.setText(this.proveedor.Delegacion().getValue());
-        txtCp.setText(this.proveedor.Cp().getValue());
-        txtTelefono.setText(this.proveedor.Telefono().getValue());
-    }
-
     private void Cerrar(){
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        // TODO
     }    
+    
 }

@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -194,7 +193,8 @@ public class Menu_AlmacenController implements Initializable {
         colExistencia.setCellValueFactory(cellData -> cellData.getValue().getExistencia());
         colUnidad.setCellValueFactory(cellData -> cellData.getValue().getUnidad());
         tvAlmacen.setItems(dataAlmacen);        
-    }
+    }  
+    
     public void LlenarComboProductos(){
         //Se actualizan los datos de la tabla, en base a la colección "data".
         cmbProducto.setItems(dataProductos);
@@ -205,6 +205,8 @@ public class Menu_AlmacenController implements Initializable {
         cmbRfc.setItems(dataProveedores);
         
     }
+    
+    
     
     public void ObtenerDatosProveedores(String Query) throws SQLException, ParseException, IOException{
         
@@ -259,7 +261,7 @@ public class Menu_AlmacenController implements Initializable {
         System.out.println(this.Usuario+" Set 3 "+this.Contrasenia);
         lblNombreUsuario.setText(this.Usuario);
         try {
-            Query="SELECT ELENA.FARMACIA.CODIGO AS CODIGO_ALMACEN, ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA,ELENA.PRODUCTOS.UNIDAD "
+            Query="SELECT ELENA.FARMACIA.CODIGO, ELENA.PRODUCTOS.NOMBRE_MEDICAMENTO, ELENA.FARMACIA.PRECIO, ELENA.FARMACIA.EXISTENCIA,ELENA.PRODUCTOS.UNIDAD "
                     + "FROM ELENA.FARMACIA JOIN ELENA.PRODUCTOS ON ELENA.FARMACIA.CODIGO_PRODUCTO=ELENA.PRODUCTOS.CODIGO_PRODUCTO";
             obtenerDatosAlmacen(Query);
             
