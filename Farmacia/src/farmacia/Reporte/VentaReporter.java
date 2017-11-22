@@ -29,8 +29,6 @@ public class VentaReporter {
         this.apMaterno = apMaterno;
         this.total = total;
     }
-
-    
     
     public String getNoNota() {
         return noNota;

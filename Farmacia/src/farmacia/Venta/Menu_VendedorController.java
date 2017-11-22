@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +33,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -56,6 +58,7 @@ public class Menu_VendedorController implements Initializable {
     private AnchorPane rootPane;
     String Query;
     int contador=0;
+    @FXML private CheckBox chFacturacion;
     @FXML private Label lblNombreUsuario;
     @FXML private JFXComboBox cmbRfc;
     @FXML private TableView<Detalle_Ventas> tvDetallesVenta;
@@ -105,7 +108,7 @@ public class Menu_VendedorController implements Initializable {
     String noFactura;
     String fechaFact;
     String horaFact;
-    String Rfc;
+    String Rfc="XXXXX";
     String Total;
     String Cantidad;
     String Subtotal;
@@ -204,36 +207,32 @@ public class Menu_VendedorController implements Initializable {
                     .text("EL detalle de venta se ha registrado correctamente")
                     .hideAfter(Duration.seconds(4))
                     .position(Pos.TOP_RIGHT);
-                    notificationsBuilderAlmacen.showConfirm();                  
+                    notificationsBuilderAlmacen.showConfirm();     
+                    Query="Select EXISTENCIA FROM ELENA.FARMACIA WHERE CODIGO= '"+Codigo+"'";
+                    int existencia= db.SeleccionarExist(Query);
+                    int nuevaExistencia=existencia- Integer.parseInt(Cantidad);
+                    Query="UPDATE ELENA.FARMACIA SET EXISTENCIA= "+nuevaExistencia+" WHERE CODIGO ='"+Codigo+"'";
+                    if(db.Actualizar(Query)){
+                        Notifications notificationsBuilderAct = Notifications.create()
+                        .title("Actualizacion exitosa")               
+                        .text("El almacen se ha actualizado correctamente")
+                        .hideAfter(Duration.seconds(4))
+                        .position(Pos.TOP_RIGHT);
+                        notificationsBuilderAct.showConfirm(); 
+                    }else{
+                       Alert alert = new Alert(Alert.AlertType.ERROR);
+                       alert.setTitle("Error");
+                       alert.setHeaderText("Error al actualizar el almacen");
+                       alert.setContentText("Hubo un error al realizar  la actualización");
+                       alert.showAndWait();
+                    }  
                 }else{
                    Alert alert = new Alert(Alert.AlertType.ERROR);
                    alert.setTitle("Error");
                    alert.setHeaderText("Error al registrar el detalle");
                    alert.setContentText("Hubo un error al realizar el registro");
                    alert.showAndWait();
-                }   
-                          
-            Query="Select EXISTENCIA FROM ELENA.FARMACIA WHERE CODIGO_PRODUCTO= '"+Codigo+"'";
-            int existencia= db.SeleccionarExist(Query);
-            System.out.println("Existencia"+existencia);
-            int nuevaExistencia=existencia-Integer.parseInt(Cantidad);
-            System.out.println("Existencia nueva"+nuevaExistencia);
-                Query="UPDATE ELENA.FARMACIA SET EXISTENCIA= "+nuevaExistencia+" WHERE CODIGO_PRODUCTO ='"+Codigo+"'";
-                if(db.Actualizar(Query)){
-                    Notifications notificationsBuilderAlmacen = Notifications.create()
-                    .title("Actualizacion exitosa")               
-                    .text("El almacen se ha actualizado correctamente")
-                    .hideAfter(Duration.seconds(4))
-                    .position(Pos.TOP_RIGHT);
-                    notificationsBuilderAlmacen.showConfirm(); 
-
-                }else{
-                   Alert alert = new Alert(Alert.AlertType.ERROR);
-                   alert.setTitle("Error");
-                   alert.setHeaderText("Error al actualizar el almacen");
-                   alert.setContentText("Hubo un error al realizar  la actualización");
-                   alert.showAndWait();
-                }
+                }                     
             }
         
                 //limpiar todos los valores
@@ -253,7 +252,11 @@ public class Menu_VendedorController implements Initializable {
         txtNombreMed.setText("");
         txtCantidad.setText("");
         contador=0;
-        cmbRfc.setDisable(false);
+        if (chFacturacion.isSelected()) {
+            cmbRfc.setDisable(false);   
+        }else{
+            cmbRfc.setDisable(true);
+        }
     }
     @FXML
     public void btnEliminarClienteClicked(ActionEvent event) throws SQLException, ParseException, IOException{
@@ -348,7 +351,9 @@ public class Menu_VendedorController implements Initializable {
         
         Subtotal= String.valueOf(subtotal);
         fechaFact  = formateador.format(fecha);
-        Rfc=cmbRfc.getValue().toString();
+        if (chFacturacion.isSelected()) {
+            Rfc=cmbRfc.getValue().toString();
+        }
         if(Integer.parseInt(Cantidad)>Integer.parseInt(tvAlmacen.getSelectionModel().getSelectedItem().getExistencia().getValue())){
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
@@ -462,10 +467,17 @@ public class Menu_VendedorController implements Initializable {
         lblNombreUsuario.setText(this.Usuario);
         
     }
-        private void gestionarEventos() {
+    private void gestionarEventos() {
         tvClientes.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Clientes> observable, Clientes oldValue, Clientes newValue) -> {
             btnEliminarCliente.setDisable(false);
             btnModificarCliente.setDisable(false);
+    });
+    chFacturacion.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+        if (chFacturacion.isSelected()) {
+            cmbRfc.setDisable(false);
+        }else{
+            cmbRfc.setDisable(true);
+        }
         });
     }
     @Override

@@ -5,18 +5,25 @@
  */
 package farmacia.Almacen;
 
+import farmacia.Reporte.AlmacenReporter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Administrador.Menu_AdminController;
 import farmacia.Administrador.Proveedores;
+import farmacia.Reporte.SolicitudCompraReporter;
+import farmacia.Reporte.VentaReporter;
 import farmacia.Utilidades.Bd;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +45,14 @@ import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * FXML Controller class
@@ -54,6 +69,7 @@ public class Menu_AlmacenController implements Initializable {
     String Usuario;
     String Contrasenia;
     String Query;
+    DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
     //===============
     @FXML private Label lblNombreUsuario;
     @FXML private JFXTextField txtCveProducto;
@@ -137,9 +153,56 @@ public class Menu_AlmacenController implements Initializable {
         stage.initStyle(StageStyle.UTILITY);
         stage.show();
     }
+    //==============IMPRIMIR REPORTE ALMACEN===============    
     @FXML
-    public void btnImprimirReporteClicked(ActionEvent event) throws IOException{
-    
+    public void btnImprimirReporteClicked(ActionEvent event) throws IOException, JRException{    
+        AlmacenReporter almacenR;
+        List <AlmacenReporter> lista = new ArrayList<>();                
+         for (int i=0; i<=dataAlmacen.size()-1; i++){
+             almacenR=new AlmacenReporter(
+             dataAlmacen.get(i).getCodigo().get(),
+             dataAlmacen.get(i).getNombre().get(),
+             dataAlmacen.get(i).getPrecio().get(),             
+             dataAlmacen.get(i).getExistencia().get(),
+             dataAlmacen.get(i).getUnidad().get());
+             lista.add(almacenR);      
+        }
+        LocalDate hoy = LocalDate.now();
+        String fechaActual= hoy.format(formatters);
+        HashMap parametros = new HashMap();
+        parametros.put("FechaActual", fechaActual);
+        JasperReport reporte;
+        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteAlmacen.jasper";
+        reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+        JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
+        JasperViewer viewer = new JasperViewer(jprint,false);
+        viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        viewer.setVisible(true);
+    }
+    //==============IMPRIMIR REPORTE===============
+    public void btnImprimirNotaClicked(ActionEvent event) throws IOException, JRException{
+        
+        SolicitudCompraReporter solicitudR;
+        List <SolicitudCompraReporter> lista = new ArrayList<>();  
+        
+         for (int i=0; i<=dataSolicitudes.size()-1; i++){
+             solicitudR=new SolicitudCompraReporter(
+             dataSolicitudes.get(i).getRfc().get(),
+             dataSolicitudes.get(i).getCodigo().get(),
+             dataSolicitudes.get(i).getCantidad().get());
+             lista.add(solicitudR);      
+        }
+        LocalDate hoy = LocalDate.now();
+        String fechaActual= hoy.format(formatters);
+        HashMap parametros = new HashMap();
+        parametros.put("fechaAct", fechaActual);
+        JasperReport reporte;
+        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteNotaCompra.jasper";
+        reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+        JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
+        JasperViewer viewer = new JasperViewer(jprint,false);
+        viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        viewer.setVisible(true);
     }
     @FXML
     public void btnAgregarSolicitudClicked(ActionEvent event) throws IOException, SQLException{

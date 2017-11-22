@@ -39,17 +39,19 @@
                           <columns>
                             <TableColumn fx:id="colNota" prefWidth="79.0" text="No Nota" />
                             <TableColumn fx:id="colFecha" prefWidth="169.0" text="Fecha" />
-                              <TableColumn fx:id="colCodigo" prefWidth="197.0" text="Codigo" />
-                              <TableColumn fx:id="colCantidad" prefWidth="238.0" text="Cantidad" />
+                              <TableColumn fx:id="colCodigo" prefWidth="154.0" text="Codigo" />
+                              <TableColumn fx:id="colNombre" prefWidth="219.0" text="Nombre" />
+                              <TableColumn fx:id="colCantidad" prefWidth="137.0" text="Cantidad" />
                               <TableColumn fx:id="colPrecio" prefWidth="170.0" text="Precio" />
                               <TableColumn fx:id="colSubtotal" prefWidth="137.0" text="Subtotal" />
                           </columns>
                         </TableView>
-                        <JFXComboBox fx:id="cmbRfc" layoutX="14.0" layoutY="59.0" prefHeight="25.0" prefWidth="281.0" promptText="Rfc Cliente" />
+                        <JFXComboBox fx:id="cmbRfc" disable="true" layoutX="303.0" layoutY="31.0" prefHeight="25.0" prefWidth="281.0" promptText="Rfc Cliente" />
                         <JFXButton fx:id="btnAgregarDetalle" layoutX="957.0" layoutY="537.0" onAction="#btnAgregarClicked" text="Agregar producto" />
                         <Label layoutX="571.0" layoutY="354.0" text="Total" />
                         <Label fx:id="lblTotal" layoutX="637.0" layoutY="354.0" text="Label" />
                         <JFXTextField fx:id="txtCantidad" labelFloat="true" layoutX="783.0" layoutY="535.0" promptText="Cantidad" />
+                        <CheckBox fx:id="chFacturacion" layoutX="37.0" layoutY="35.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="214.0" text="Facturacion" />
                      </children></AnchorPane>
             </content>
           </Tab>
