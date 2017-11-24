@@ -1,5 +1,4 @@
 package farmacia.Venta;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -73,6 +72,7 @@ public class Menu_VendedorController implements Initializable {
     String Query;
     int contador=0;
     HashMap parametros = new HashMap();
+    HashMap parametrosF = new HashMap();
                     List <DetalleVentaReporter> lista = new ArrayList<>();   
     @FXML private CheckBox chFacturacion;
     @FXML private Label lblNombreUsuario;
@@ -162,7 +162,7 @@ public class Menu_VendedorController implements Initializable {
                 "JOIN ELENA.CLIENTES ON ELENA.VENTA_MEDICAMENTOS.RFC = ELENA.CLIENTES.RFC\n" +
                 "where FECHA = to_Date('"+fechaActual+"','dd:mm:YY') and HORA between to_Date('"+horaInicio+"','hh24:mi:ss') and  to_Date('"+horaFinal+"','hh24:mi:ss')";
         System.out.println("minuto: "+minuto);
-        if(hora<17||(hora<24&&hora>17)){
+        if(hora<17||(hora<23&&hora>17)){
             Alert dialogoAlerta = new Alert(AlertType.CONFIRMATION);
             dialogoAlerta.setTitle("Confirmación");
             dialogoAlerta.setHeaderText(null);
@@ -298,72 +298,88 @@ public class Menu_VendedorController implements Initializable {
             
             Query="Insert into ELENA.DETALLE_VENTAS (NO_NOTA,FECHA,CANTIDAD,SUBTOTAL,PRECIO_VENTA,CODIGO) \n" +
     "                                values ('"+noFactura+"',to_date('"+fechaFact+"','DD/MM/RR'),"+Cantidad+","+Subtotal+","+PrecioV+",'"+Codigo+"')";
-                if(db.InsertarClientes(Query)==true){
-                    Notifications notificationsBuilderAlmacen = Notifications.create()
-                    .title("Registro exitoso")               
-                    .text("EL detalle de venta se ha registrado correctamente")
+            if(db.InsertarClientes(Query)==true){
+                Notifications notificationsBuilderAlmacen = Notifications.create()
+                .title("Registro exitoso")               
+                .text("EL detalle de venta se ha registrado correctamente")
+                .hideAfter(Duration.seconds(4))
+                .position(Pos.TOP_RIGHT);
+                notificationsBuilderAlmacen.showConfirm();     
+                Query="Select EXISTENCIA FROM ELENA.FARMACIA WHERE CODIGO= '"+Codigo+"'";
+                int existencia= db.SeleccionarExist(Query);
+                int nuevaExistencia=existencia- Integer.parseInt(Cantidad);
+                Query="UPDATE ELENA.FARMACIA SET EXISTENCIA= "+nuevaExistencia+" WHERE CODIGO ='"+Codigo+"'";
+                if(db.Actualizar(Query)){
+                    Notifications notificationsBuilderAct = Notifications.create()
+                    .title("Actualizacion exitosa")               
+                    .text("El almacen se ha actualizado correctamente")
                     .hideAfter(Duration.seconds(4))
                     .position(Pos.TOP_RIGHT);
-                    notificationsBuilderAlmacen.showConfirm();     
-                    Query="Select EXISTENCIA FROM ELENA.FARMACIA WHERE CODIGO= '"+Codigo+"'";
-                    int existencia= db.SeleccionarExist(Query);
-                    int nuevaExistencia=existencia- Integer.parseInt(Cantidad);
-                    Query="UPDATE ELENA.FARMACIA SET EXISTENCIA= "+nuevaExistencia+" WHERE CODIGO ='"+Codigo+"'";
-                    if(db.Actualizar(Query)){
-                        Notifications notificationsBuilderAct = Notifications.create()
-                        .title("Actualizacion exitosa")               
-                        .text("El almacen se ha actualizado correctamente")
-                        .hideAfter(Duration.seconds(4))
-                        .position(Pos.TOP_RIGHT);
-                        notificationsBuilderAct.showConfirm(); 
-                    }else{
-                       Alert alert = new Alert(Alert.AlertType.ERROR);
-                       alert.setTitle("Error");
-                       alert.setHeaderText("Error al actualizar el almacen");
-                       alert.setContentText("Hubo un error al realizar  la actualización");
-                       alert.showAndWait();
-                    }  
+                    notificationsBuilderAct.showConfirm(); 
                 }else{
-                   Alert alert = new Alert(Alert.AlertType.ERROR);
-                   alert.setTitle("Error");
-                   alert.setHeaderText("Error al registrar el detalle");
-                   alert.setContentText("Hubo un error al realizar el registro");
-                   alert.showAndWait();
-                }    
-                
-                
-                //================================GENERAR PDF================================
-                lista.clear();
-                DetalleVentaReporter detalleVentaR;             
-                 for (int j=0; j<=dataDetalles.size()-1; j++){
-                     detalleVentaR=new DetalleVentaReporter(
-                     dataDetalles.get(j).getCantidad().get(),
-                     dataDetalles.get(j).getUnidad().get(),
-                     dataDetalles.get(j).getNombre().get(),
-                     dataDetalles.get(j).getPrecioC().get(),
-                     dataDetalles.get(j).getSubtotal().get());
-                     lista.add(detalleVentaR);      
-                }
-                LocalDate hoy = LocalDate.now();
-                String fechaActual= hoy.format(formatters);
-
-                parametros.put("noNota", noFactura);
-                parametros.put("horaAct", horaFact);
-                parametros.put("fechaAct", fechaActual);
-                parametros.put("Total", Total);
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error al actualizar el almacen");
+                    alert.setContentText("Hubo un error al realizar  la actualización");
+                    alert.showAndWait();
+                }  
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error al registrar el detalle");
+                alert.setContentText("Hubo un error al realizar el registro");
+                alert.showAndWait();
+            }        
+            lista.clear();
+            DetalleVentaReporter detalleVentaR;             
+            for(int j=0; j<=dataDetalles.size()-1; j++){
+                detalleVentaR=new DetalleVentaReporter(
+                dataDetalles.get(j).getCantidad().get(),
+                dataDetalles.get(j).getUnidad().get(),
+                dataDetalles.get(j).getNombre().get(),
+                dataDetalles.get(j).getPrecioC().get(),
+                dataDetalles.get(j).getSubtotal().get());
+                lista.add(detalleVentaR);      
             }
-            JasperReport reporte;
-
-            String path="C:/Users/Perséfone/Documents/Reportes/reporteNota.jasper";
-            //String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteNota.jasper";
-            reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+        }
+        LocalDate hoy = LocalDate.now();
+        String fechaActual= hoy.format(formatters);
+        parametros.put("noNota", noFactura);
+        parametros.put("horaAct", horaFact);
+        parametros.put("fechaAct", fechaActual);
+        parametros.put("Total", Total);
+        
+        if (chFacturacion.isSelected()) {
+            //================================GENERAR PDF FACTURA================================
+            parametrosF.put("horaAct", horaFact);
+            parametrosF.put("fechaAct", fechaActual);
+            parametrosF.put("Total", Total);
+            parametrosF.put("razonSoc", "Farmacia conocida xD");
+            parametrosF.put("rfcEmp", "Farm123459Q");
+            parametrosF.put("domEmp", "EN UN CALLE EN UNA CIUDAD ");
+            parametrosF.put("rfcCliente", Rfc);
+            JasperReport reporteF = null;
+            String pathF="C:/Users/Perséfone/Documents/Reportes/reporteFactura.jasper";
+            //String pathF="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteFactura.jasper";
+            reporteF = (JasperReport) JRLoader.loadObjectFromLocation(pathF);
             //JasperReport reporte = (JasperReport) JRLoader.loadObject("reporteNota.jasper");
-            JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
-            JasperViewer viewer = new JasperViewer(jprint,false);
-            viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            viewer.setVisible(true);
-               
-                //limpiar todos los valores
+            JasperPrint jprintF = JasperFillManager.fillReport(reporteF,parametrosF, new JRBeanCollectionDataSource(lista));
+            JasperViewer viewerF = new JasperViewer(jprintF,false);
+            viewerF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            viewerF.setVisible(true);
+        }
+        //================================GENERAR PDF NOTA================================
+        JasperReport reporte;
+        String path="C:/Users/Perséfone/Documents/Reportes/reporteNota.jasper";
+        //String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteNota.jasper";
+        reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+        //JasperReport reporte = (JasperReport) JRLoader.loadObject("reporteNota.jasper");
+        JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
+        JasperViewer viewer = new JasperViewer(jprint,false);
+        viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        viewer.setVisible(true);
+                       
+        //limpiar todos los valores
 
         dataDetalles.clear();
         lblTotal.setText("");
