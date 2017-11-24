@@ -32,7 +32,7 @@
                             </cursor>
                         </JFXButton>
                         <JFXTextField fx:id="txtCveProducto" labelFloat="true" layoutX="69.0" layoutY="537.0" maxWidth="648.0" minWidth="196.0" prefHeight="31.0" prefWidth="211.0" promptText="Clave del producto" />
-                        <JFXButton fx:id="btnActualizarReg" layoutX="796.0" layoutY="46.0" text="Actualizar registros" />
+                        <JFXButton fx:id="btnRealizarCorte" layoutX="796.0" layoutY="46.0" onAction="#btnRealizarCorteClicked" text="Realizar corte" />
                         <JFXButton fx:id="btnImprimirReporte" layoutX="889.0" layoutY="349.0" onAction="#btnFinalizarClicked" text="Imprimir reporte" />
                         <JFXTextField fx:id="txtNombreMed" labelFloat="true" layoutX="319.0" layoutY="536.0" maxWidth="288.0" minWidth="288.0" prefHeight="31.0" prefWidth="288.0" promptText="Nombre medicamento" />
                         <TableView fx:id="tvDetallesVenta" layoutX="15.0" layoutY="124.0" prefHeight="200.0" prefWidth="1065.0">

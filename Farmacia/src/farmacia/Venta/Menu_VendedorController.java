@@ -5,9 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import farmacia.Administrador.Menu_AdminController;
 import farmacia.Almacen.Almacen;
-import farmacia.Almacen.Detalle_Compra;
 import farmacia.Reporte.DetalleVentaReporter;
-import farmacia.Reporte.VentaReporter;
 import farmacia.Utilidades.Bd;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
@@ -21,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,10 +35,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -120,6 +121,13 @@ public class Menu_VendedorController implements Initializable {
     ObservableList<Clientes> dataClientes = FXCollections.observableArrayList();
     ArrayList<String[]> cliente = new ArrayList<>();
     
+    ArrayList<String[]> factura = new ArrayList<>();
+    ObservableList<Factura> data = FXCollections.observableArrayList();
+    LocalDate hoy = LocalDate.now();
+    String fechaActual= hoy.format(formatters);
+    Date ahora = new Date();
+    SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+    String horaFacturacion=formater.format(ahora);
     String Usuario;
     String Contrasenia;
     String noFactura;
@@ -133,6 +141,76 @@ public class Menu_VendedorController implements Initializable {
     String Subtotal;
     String PrecioV;
     String Codigo;
+    String horaInicio = null;
+    String horaFinal = null;
+    @FXML void btnRealizarCorteClicked(ActionEvent event) throws JRException{ 
+        
+
+
+        int hora=ahora.getHours();
+        int minuto=ahora.getMinutes();
+        if(hora<17){
+            horaInicio="07:00:00";
+            horaFinal="17:00:00";
+        }else{
+            horaInicio="17:00:00";
+            horaFinal="23:59:00";
+        }
+        Query= "select ELENA.VENTA_MEDICAMENTOS.NO_NOTA, TO_CHAR(ELENA.VENTA_MEDICAMENTOS.FECHA,'dd/mm/yy'), TO_CHAR(ELENA.VENTA_MEDICAMENTOS.HORA,'hh24:mi:ss'), \n" +
+                "ELENA.VENTA_MEDICAMENTOS.RFC, ELENA.CLIENTES.NOMBRE, ELENA.CLIENTES.AP_PATERNO, ELENA.CLIENTES.AP_MATERNO, \n" +
+                "ELENA.VENTA_MEDICAMENTOS.TOTAL_VENTA from ELENA.VENTA_MEDICAMENTOS \n" +
+                "JOIN ELENA.CLIENTES ON ELENA.VENTA_MEDICAMENTOS.RFC = ELENA.CLIENTES.RFC\n" +
+                "where FECHA = to_Date('"+fechaActual+"','dd:mm:YY') and HORA between to_Date('"+horaInicio+"','hh24:mi:ss') and  to_Date('"+horaFinal+"','hh24:mi:ss')";
+        System.out.println("minuto: "+minuto);
+        if(hora<17||(hora<24&&hora>17)){
+            Alert dialogoAlerta = new Alert(AlertType.CONFIRMATION);
+            dialogoAlerta.setTitle("Confirmación");
+            dialogoAlerta.setHeaderText(null);
+            dialogoAlerta.initStyle(StageStyle.UTILITY);
+            dialogoAlerta.setContentText("¿Esta seguro que quiere realizar el corte?");
+            Optional<ButtonType> result = dialogoAlerta.showAndWait();
+            if(result.get()==ButtonType.OK){
+                System.out.println("Aceptado");
+                TextInputDialog dialogoTextual = new TextInputDialog();
+                dialogoTextual.setTitle("Verificcacion");
+                dialogoTextual.setHeaderText("Ingrese su contraseña para confirmar la acción");
+                dialogoTextual.initStyle(StageStyle.UTILITY);
+                Optional<String> respuesta = dialogoTextual.showAndWait();
+                System.out.println(respuesta);
+                if(respuesta.get(). equals(this.Contrasenia)){
+                    System.out.println("Igual");
+                    corteDeCaja(Query);
+                }else{
+                    System.out.println("Diferente");
+                    System.out.println("Diferente");
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                    alert2.setTitle("Error");
+                    alert2.setHeaderText("Error en la verificación de usuario");
+                    alert2.setContentText("La contraseña de usuario es erronea");
+                    alert2.showAndWait();
+                }     
+            }                
+        }else{
+            TextInputDialog dialogoTextual = new TextInputDialog();
+            dialogoTextual.setTitle("Verificcacion");
+            dialogoTextual.setHeaderText("Ingrese su contraseña para confirmar la acción");
+            dialogoTextual.initStyle(StageStyle.UTILITY);
+            Optional<String> respuesta = dialogoTextual.showAndWait();
+            System.out.println(respuesta);
+            System.out.println(fechaActual+"----"+horaInicio+"----"+horaFinal);
+            if(respuesta.get().equals(this.Contrasenia)){
+                System.out.println("Igual"); 
+                corteDeCaja(Query);
+            }else{
+                System.out.println("Diferente");
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("Error en la verificación de usuario");
+                alert2.setContentText("La contraseña de usuario es erronea");
+                alert2.showAndWait();
+            }         
+        } 
+    }
     
     @FXML
      public void btnActualizarClientesClicked(ActionEvent event) throws SQLException{
@@ -358,6 +436,45 @@ public class Menu_VendedorController implements Initializable {
              alert2.setContentText("Debe insetar sólo uno de los dos campos");
              alert2.showAndWait();    
         }
+    }
+    private void corteDeCaja(String Query) throws JRException{
+        Bd db = new Bd();
+        db.Conectar(this.Usuario, this.Contrasenia);
+        
+        factura = db.Seleccionar(Query);        
+        for (int i=0; i<=factura.size()-1; i++){
+            data.addAll( new Factura(
+                    factura.get(i)[0], //id
+                    factura.get(i)[1],
+                    factura.get(i)[2],//correo
+                    factura.get(i)[3],//telefono
+                    factura.get(i)[4],//tratamiento
+                    factura.get(i)[5],//empresa
+                    factura.get(i)[6],//país
+                    factura.get(i)[7]
+            ));
+            System.out.println(factura.get(i)[2]);
+        }
+        double total = 0;
+        for (int i = 0; i <=data.size()-1; i++) {
+             total+=Double.parseDouble(data.get(i).getTotal());     
+        }
+       
+        parametros.put("noNota", noFactura);
+        parametros.put("horaAct", horaFacturacion);
+        parametros.put("fechaAct", fechaActual);
+        parametros.put("usuario", this.Usuario);
+        parametros.put("total",String.valueOf(total));
+  
+        JasperReport reporte;
+
+        //String path="C:/Users/Perséfone/Documents/Reportes/reporteNota.jasper";
+        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteCorte.jasper";
+        reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+        JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(data));
+        JasperViewer viewer = new JasperViewer(jprint,false);
+        viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        viewer.setVisible(true);
     }
     public void btnAgregarClicked(ActionEvent event) throws SQLException{
         ObtenerDatosProducto();
