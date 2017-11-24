@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
@@ -16,27 +17,33 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="414.0" prefWidth="724.0">
                      <children>
-                        <TableView fx:id="tvVentas" layoutX="86.0" layoutY="126.0" prefHeight="279.0" prefWidth="741.0">
+                        <TableView fx:id="tvVentas" layoutX="16.0" layoutY="126.0" prefHeight="279.0" prefWidth="935.0">
                           <columns>
-                              <TableColumn fx:id="colRfc" prefWidth="88.0" text="RFC" />
-                            <TableColumn fx:id="colNota" prefWidth="82.0" text="No_Nota" />
-                            <TableColumn fx:id="colFecha" prefWidth="85.0" text="Fecha" />
-                              <TableColumn fx:id="colNombre" prefWidth="117.0" text="Nombre" />
-                              <TableColumn fx:id="colPaterno" prefWidth="108.0" text="Ap Paterno" />
-                              <TableColumn fx:id="colMaterno" prefWidth="115.0" text="Ap Materno" />
-                              <TableColumn fx:id="colTotal" prefWidth="142.0" text="Total" />
+                              <TableColumn fx:id="colRfc" prefWidth="136.0" text="RFC" />
+                            <TableColumn fx:id="colNota" prefWidth="110.0" text="No_Nota" />
+                            <TableColumn fx:id="colFecha" prefWidth="131.0" text="Fecha" />
+                              <TableColumn fx:id="colNombre" prefWidth="157.0" text="Nombre" />
+                              <TableColumn fx:id="colPaterno" prefWidth="163.0" text="Ap Paterno" />
+                              <TableColumn fx:id="colMaterno" prefWidth="129.0" text="Ap Materno" />
+                              <TableColumn fx:id="colTotal" prefWidth="100.0" text="Total" />
                           </columns>
                         </TableView>
-                        <JFXButton layoutX="483.0" layoutY="23.0" onAction="#btnGenerarReporteClicked" prefHeight="32.0" prefWidth="192.0" style="-fx-background-color: #babdc4;" text="Generar reporte de ventas" textAlignment="CENTER">
+                        <JFXButton layoutX="499.0" layoutY="42.0" onAction="#btnGenerarReporteClicked" prefHeight="44.0" prefWidth="192.0" style="-fx-background-color: #4762A7;" text="Generar reporte de ventas" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
                         </JFXButton>
                         <JFXDatePicker fx:id="dateIni" layoutX="16.0" layoutY="45.0" />
                         <JFXDatePicker fx:id="dateFin" layoutX="259.0" layoutY="45.0" />
                         <Label layoutX="16.0" layoutY="19.0" text="Fecha de inicio" />
                         <Label layoutX="260.0" layoutY="19.0" text="Fecha de fin" />
-                        <JFXButton onAction="#btnImprimirClicked" layoutX="482.0" layoutY="72.0" text="Imprimir reporte" />
+                        <JFXButton layoutX="756.0" layoutY="42.0" onAction="#btnImprimirClicked" prefHeight="44.0" prefWidth="192.0" style="-fx-background-color: #4762A7;" text="Imprimir reporte" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -60,20 +67,35 @@
                               <TableColumn fx:id="colNombreCon" prefWidth="122.0" text="Nombre" />
                           </columns>
                         </TableView>
-                        <JFXButton layoutX="80.0" layoutY="390.0" onAction="#btnAgregarClicked" text="Agregar">
+                        <JFXButton layoutX="71.0" layoutY="390.0" onAction="#btnAgregarClicked" style="-fx-background-color: #4762A7;" text="Agregar" textFill="WHITE">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
                         </JFXButton>
-                        <JFXButton fx:id="btnModificarProveedor" disable="true" layoutX="168.0" layoutY="390.0" onAction="#btnModificarClicked" text="Modificar" />
-                        <JFXButton fx:id="btnEliminarProveedor" disable="true" layoutX="272.0" layoutY="390.0" onAction="#btnEliminarClicked" text="Eliminar" />
-                        <JFXButton layoutX="701.0" layoutY="45.0" onAction="#btnBuscarProveedorClicked" text="Buscar">
+                        <JFXButton fx:id="btnModificarProveedor" disable="true" layoutX="168.0" layoutY="390.0" onAction="#btnModificarClicked" style="-fx-background-color: #4762A7;" text="Modificar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
+                        <JFXButton fx:id="btnEliminarProveedor" disable="true" layoutX="272.0" layoutY="390.0" onAction="#btnEliminarClicked" style="-fx-background-color: #4762A7;" text="Eliminar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
+                        <JFXButton layoutX="703.0" layoutY="38.0" onAction="#btnBuscarProveedorClicked" style="-fx-background-color: #4762A7;" text="Buscar" textFill="WHITE">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
                         </JFXButton>
-                        <JFXTextField fx:id="txtRrfProv" layoutX="79.0" layoutY="38.0" maxWidth="648.0" minWidth="604.0" prefHeight="31.0" prefWidth="604.0" promptText="RFC del proveedor" />
-                        <JFXButton fx:id="btnActualizarProv" layoutX="796.0" layoutY="46.0" onAction="#btnActualizarClicked" text="Actualizar registros" />
+                        <JFXTextField fx:id="txtRrfProv" focusColor="#34873d" labelFloat="true" layoutX="79.0" layoutY="38.0" maxWidth="648.0" minWidth="604.0" prefHeight="31.0" prefWidth="604.0" promptText="RFC del proveedor" unFocusColor="BLACK" />
+                        <JFXButton fx:id="btnActualizarProv" layoutX="796.0" layoutY="38.0" onAction="#btnActualizarClicked" style="-fx-background-color: #4762A7;" text="Actualizar registros" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -87,23 +109,38 @@
                             <TableColumn fx:id="colTipo" prefWidth="158.0" text="Tipo de Usuario" />
                           </columns>
                         </TableView>
-                        <JFXButton layoutX="827.0" layoutY="143.0" onAction="#btnAgregarUsuarioClicked" text="Agregar" />
-                        <JFXButton fx:id="btnEliminarUsuario" disable="true" layoutX="356.0" layoutY="360.0" onAction="#btnEliminarrUsuarioClicked" text="Eliminar" />
-                        <JFXTextField fx:id="txtNombreUsuario" layoutX="15.0" layoutY="25.0" maxWidth="575.0" minWidth="322.0" prefHeight="31.0" prefWidth="575.0" promptText="Nombre del vendedor" unFocusColor="BLACK" />
-                        <JFXButton layoutX="638.0" layoutY="28.0" onAction="#btnBuscarUsuarioClicked" text="Buscar" />
-                        <JFXTextField fx:id="txtNombre" layoutX="368.0" layoutY="96.0" promptText="Usuario" />
-                        <JFXPasswordField fx:id="txtContrasenia" labelFloat="true" layoutX="536.0" layoutY="95.0" maxWidth="214.0" minWidth="185.0" prefHeight="31.0" prefWidth="185.0" promptText="Contraseña" unFocusColor="BLACK" />
+                        <JFXButton layoutX="813.0" layoutY="134.0" onAction="#btnAgregarUsuarioClicked" style="-fx-background-color: #4762A7; -fx-padding: 10px;" text="Agregar" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
+                        <JFXButton fx:id="btnEliminarUsuario" disable="true" layoutX="354.0" layoutY="348.0" onAction="#btnEliminarrUsuarioClicked" style="-fx-background-color: #4762A7; -fx-padding: 10px;" text="Eliminar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
+                        <JFXTextField fx:id="txtNombreUsuario" focusColor="#34873d" labelFloat="true" layoutX="15.0" layoutY="25.0" maxWidth="575.0" minWidth="322.0" prefHeight="31.0" prefWidth="575.0" promptText="Nombre del vendedor" unFocusColor="BLACK" />
+                        <JFXButton layoutX="638.0" layoutY="14.0" onAction="#btnBuscarUsuarioClicked" style="-fx-background-color: #4762A7; -fx-padding: 10;" text="Buscar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></JFXButton>
+                        <JFXTextField fx:id="txtNombre" focusColor="#34873d" labelFloat="true" layoutX="368.0" layoutY="96.0" promptText="Usuario" unFocusColor="BLACK" />
+                        <JFXPasswordField fx:id="txtContrasenia" focusColor="#34873d" labelFloat="true" layoutX="536.0" layoutY="95.0" maxWidth="214.0" minWidth="185.0" prefHeight="31.0" prefWidth="185.0" promptText="Contraseña" unFocusColor="BLACK" />
                         <JFXComboBox fx:id="cmbTipoUsuario" editable="true" layoutX="734.0" layoutY="88.0" prefHeight="25.0" prefWidth="158.0" promptText="Tipo de usuario" />
                      </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
-      <Pane layoutY="1.0" prefHeight="78.0" prefWidth="975.0" style="-fx-background-color: #babdc4;">
+      <Pane layoutY="-1.0" prefHeight="81.0" prefWidth="975.0" style="-fx-background-color: #34873D;">
          <children>
-            <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="853.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="lblNombreUsuario" layoutX="713.0" layoutY="34.0" text="Nombre de usuario " />
-            <JFXButton fx:id="btnCerrarSesion" layoutX="14.0" layoutY="27.0" onAction="#btnCerrarSesionClicked" text="Cerrar sesion" />
+                <ImageView fitHeight="61.0" fitWidth="74.0" layoutX="851.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                    <Image url="@img/Logo-La-Farmacia-Azul.png" />
+                </image></ImageView>
+            <Label fx:id="lblNombreUsuario" layoutX="656.0" layoutY="30.0" text="Nombre de usuario " textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <JFXButton fx:id="btnCerrarSesion" layoutX="14.0" layoutY="27.0" onAction="#btnCerrarSesionClicked" text="Cerrar sesion" textFill="WHITE" underline="true" />
          </children>
       </Pane>
    </children>

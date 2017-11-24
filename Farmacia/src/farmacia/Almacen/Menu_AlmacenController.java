@@ -207,6 +207,13 @@ public class Menu_AlmacenController implements Initializable {
         viewer.setVisible(true);
     }
     @FXML
+    public void btnCerrarSesionClicked(ActionEvent event) throws IOException{
+        Parent Alm = FXMLLoader.load(getClass().getResource("./Login.fxml"));
+        Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stageAlm.setTitle("Bienvenido");
+        stageAlm.setScene(new Scene(Alm));    
+    }
+    @FXML
     public void btnAgregarSolicitudClicked(ActionEvent event) throws IOException, SQLException{
         obtenerDatosSolicitud();
     }

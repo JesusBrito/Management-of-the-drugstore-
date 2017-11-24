@@ -132,7 +132,7 @@ public class Menu_AdminController implements Initializable {
     
     @FXML
     public void btnCerrarSesionClicked(ActionEvent event) throws IOException{
-        Parent Alm = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent Alm = FXMLLoader.load(getClass().getResource("/Login.fxml"));
         Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
         stageAlm.setTitle("Bienvenido");
         stageAlm.setScene(new Scene(Alm));    

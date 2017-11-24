@@ -29,6 +29,10 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{noNota}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="455" y="0" width="79" height="79"/>
+				<imageExpression class="java.lang.String"><![CDATA["/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/img/Logo-La-Farmacia-Azul.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

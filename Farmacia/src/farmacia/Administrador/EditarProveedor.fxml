@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -9,28 +10,37 @@
 
 <AnchorPane id="AnchorPane" prefHeight="705.0" prefWidth="492.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farmacia.Administrador.EditarProveedorController">
    <children>
-      <JFXTextField fx:id="txtRfc" editable="false" layoutX="80.0" layoutY="36.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="RFC" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtEmpresa" layoutX="80.0" layoutY="81.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Empresa" unFocusColor="#1a0303" />
-      <JFXTextField fx:id="txtNombre" layoutX="80.0" layoutY="128.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Nombre de contacto" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtPaterno" layoutX="79.0" layoutY="172.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Apellido paterno" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtMaterno" layoutX="75.0" layoutY="219.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Apellido materno" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtColonia" layoutX="81.0" layoutY="327.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Colonia" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtNumero" layoutX="80.0" layoutY="371.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Número" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtCalle" layoutX="80.0" layoutY="279.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Calle" unFocusColor="BLACK" />   
-      <JFXTextField fx:id="txtCp" layoutX="79.0" layoutY="516.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Código postal" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtTelefono" layoutX="76.0" layoutY="566.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Telefono" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtDelegacion" layoutX="76.0" layoutY="460.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Delegación" unFocusColor="#0a0a0a" />
-      <JFXTextField fx:id="txtCiudad" layoutX="77.0" layoutY="416.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Ciudad" unFocusColor="BLACK" />
-      <JFXButton fx:id="btnCancelar" layoutX="72.0" layoutY="654.0" onAction="#btnCerrarClicked" text="Cerrar">
+      <JFXTextField fx:id="txtRfc" editable="false" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="66.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="RFC" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtEmpresa" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="111.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Empresa" unFocusColor="#1a0303" />
+      <JFXTextField fx:id="txtNombre" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="158.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Nombre de contacto" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtPaterno" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="202.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Apellido paterno" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtMaterno" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="249.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Apellido materno" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtColonia" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="344.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Colonia" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtNumero" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="388.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Número" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtCalle" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="296.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Calle" unFocusColor="BLACK" />   
+      <JFXTextField fx:id="txtCp" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="533.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Código postal" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtTelefono" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="583.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Telefono" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtDelegacion" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="482.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Delegación" unFocusColor="#0a0a0a" />
+      <JFXTextField fx:id="txtCiudad" focusColor="#34873d" labelFloat="true" layoutX="76.0" layoutY="433.0" maxWidth="345.0" minWidth="345.0" prefHeight="31.0" prefWidth="345.0" promptText="Ciudad" unFocusColor="BLACK" />
+      <JFXButton fx:id="btnCancelar" layoutX="84.0" layoutY="645.0" onAction="#btnCerrarClicked" prefHeight="31.0" prefWidth="72.0" style="-fx-background-color: #4762A7; -fx-padding: 8;" text="Cerrar" textFill="WHITE">
            <cursor>
             <Cursor fx:constant="HAND" />
             </cursor>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
        </JFXButton>
-      <JFXButton layoutX="355.0" layoutY="656.0" onAction="#btnActualizarClicked" text="Guardar">
+      <JFXButton layoutX="342.0" layoutY="645.0" onAction="#btnActualizarClicked" style="-fx-background-color: #4762A7; -fx-padding: 8;" text="Guardar" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
        </JFXButton>
-      <Label layoutX="61.0" layoutY="14.0" text="Actualizar datos del proveedor" />
+      <Label layoutX="79.0" layoutY="22.0" text="Actualizar datos del proveedor" underline="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>
