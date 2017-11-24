@@ -12,6 +12,7 @@ public class Bd {
             DriverManager.registerDriver( new oracle.jdbc.driver.OracleDriver() );
             //nombre del servidor
             String nombre_servidor = "localhost";
+            //String nombre_servidor ="192.168.43.69";
             //numero del puerto
             String numero_puerto = "1521";
             //SID

@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXTextField;
 import farmacia.Administrador.Menu_AdminController;
 import farmacia.Almacen.Almacen;
 import farmacia.Almacen.Detalle_Compra;
+import farmacia.Reporte.DetalleVentaReporter;
+import farmacia.Reporte.VentaReporter;
 import farmacia.Utilidades.Bd;
 import farmacia.Utilidades.Usuario;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +46,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.controlsfx.control.Notifications;
 
 /**
@@ -54,10 +66,13 @@ public class Menu_VendedorController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    private Stage stagePrincipal = new Stage();;
+    private Stage stagePrincipal = new Stage();
     private AnchorPane rootPane;
+    DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d-MM-uuuu");
     String Query;
     int contador=0;
+    HashMap parametros = new HashMap();
+                    List <DetalleVentaReporter> lista = new ArrayList<>();   
     @FXML private CheckBox chFacturacion;
     @FXML private Label lblNombreUsuario;
     @FXML private JFXComboBox cmbRfc;
@@ -65,6 +80,8 @@ public class Menu_VendedorController implements Initializable {
     @FXML private TableColumn<Detalle_Ventas, String> colNota;
     @FXML private TableColumn<Detalle_Ventas, String> colFecha;
     @FXML private TableColumn<Detalle_Ventas, String> colCodigo;
+    @FXML private TableColumn<Detalle_Ventas, String> colNombre;
+    @FXML private TableColumn<Detalle_Ventas, String> colUnidad;
     @FXML private TableColumn<Detalle_Ventas, String> colCantidad;
     @FXML private TableColumn<Detalle_Ventas, String> colPrecio;
     @FXML private TableColumn<Detalle_Ventas, String> colSubtotal;
@@ -106,6 +123,8 @@ public class Menu_VendedorController implements Initializable {
     String Usuario;
     String Contrasenia;
     String noFactura;
+    String nombre;
+    String unidad;
     String fechaFact;
     String horaFact;
     String Rfc="XXXXX";
@@ -169,7 +188,7 @@ public class Menu_VendedorController implements Initializable {
         }        
     }
     @FXML
-    public void btnFinalizarClicked(ActionEvent event) throws SQLException{
+    public void btnFinalizarClicked(ActionEvent event) throws SQLException, JRException{
         Date ahora = new Date();
         SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
         horaFact=formater.format(ahora);
@@ -232,17 +251,53 @@ public class Menu_VendedorController implements Initializable {
                    alert.setHeaderText("Error al registrar el detalle");
                    alert.setContentText("Hubo un error al realizar el registro");
                    alert.showAndWait();
-                }                     
+                }    
+                
+                
+                //================================GENERAR PDF================================
+                lista.clear();
+                DetalleVentaReporter detalleVentaR;             
+                 for (int j=0; j<=dataDetalles.size()-1; j++){
+                     detalleVentaR=new DetalleVentaReporter(
+                     dataDetalles.get(j).getCantidad().get(),
+                     dataDetalles.get(j).getUnidad().get(),
+                     dataDetalles.get(j).getNombre().get(),
+                     dataDetalles.get(j).getPrecioC().get(),
+                     dataDetalles.get(j).getSubtotal().get());
+                     lista.add(detalleVentaR);      
+                }
+                LocalDate hoy = LocalDate.now();
+                String fechaActual= hoy.format(formatters);
+
+                parametros.put("noNota", noFactura);
+                parametros.put("horaAct", horaFact);
+                parametros.put("fechaAct", fechaActual);
+                parametros.put("Total", Total);
             }
-        
+            JasperReport reporte;
+
+            String path="C:/Users/Perséfone/Documents/Reportes/reporteNota.jasper";
+            //String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteNota.jasper";
+            reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject("reporteNota.jasper");
+            JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
+            JasperViewer viewer = new JasperViewer(jprint,false);
+            viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            viewer.setVisible(true);
+               
                 //limpiar todos los valores
 
         dataDetalles.clear();
         lblTotal.setText("");
         txtCantidad.setText("");
         noFactura="";
+        nombre="";
         fechaFact="";
-        Rfc="";
+        if(Rfc.equals("XXXXX")){
+           Rfc="XXXXX" ;
+        }else{
+           Rfc="";
+        }
         Total="";
         Cantidad="";
         Subtotal="";
@@ -346,6 +401,8 @@ public class Menu_VendedorController implements Initializable {
         noFactura=String.valueOf(noNota+1);
         Cantidad=txtCantidad.getText();
         PrecioV= tvAlmacen.getSelectionModel().getSelectedItem().getPrecio().getValue();
+        nombre= tvAlmacen.getSelectionModel().getSelectedItem().getNombre().getValue();
+        unidad= tvAlmacen.getSelectionModel().getSelectedItem().getUnidad().getValue();
         
         float subtotal= Float.parseFloat(PrecioV)* Integer.parseInt(txtCantidad.getText());
         
@@ -362,13 +419,15 @@ public class Menu_VendedorController implements Initializable {
             alert2.showAndWait();
         }else{
             Codigo=tvAlmacen.getSelectionModel().getSelectedItem().getCodigo().getValue();
-            dataDetalles.addAll( new Detalle_Ventas(
+            dataDetalles.addAll(new Detalle_Ventas(
                         noFactura, 
                         fechaFact,
                         Codigo,
                         Cantidad,
                         PrecioV,
-                        Float.toString(subtotal)
+                        Float.toString(subtotal),
+                        nombre,
+                        unidad
 
                 ));
             cmbRfc.setDisable(true);
@@ -387,6 +446,8 @@ public class Menu_VendedorController implements Initializable {
         colNota.setCellValueFactory(cellData -> cellData.getValue().getNo_nota());
         colFecha.setCellValueFactory(cellData -> cellData.getValue().getFecha());
         colCodigo.setCellValueFactory(cellData -> cellData.getValue().getCodigoProducto());
+        colNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+        colUnidad.setCellValueFactory(cellData -> cellData.getValue().getUnidad());
         colCantidad.setCellValueFactory(cellData -> cellData.getValue().getCantidad());
         colPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecioC());
         colSubtotal.setCellValueFactory(cellData -> cellData.getValue().getSubtotal());

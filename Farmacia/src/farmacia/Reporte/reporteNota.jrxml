@@ -12,7 +12,6 @@
 	<field name="precio" class="java.lang.String"/>
 	<field name="unidad" class="java.lang.String"/>
 	<field name="subtotal" class="java.lang.String"/>
-	<field name="field1_5" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -86,7 +85,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="33" splitType="Stretch">
 			<textField>
 				<reportElement x="6" y="6" width="72" height="20"/>
 				<textElement/>

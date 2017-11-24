@@ -19,15 +19,19 @@ public class Detalle_Ventas {
     private StringProperty Cantidad;
     private StringProperty Subtotal;
     private StringProperty PrecioC;
+    private StringProperty Nombre;
+    private StringProperty Unidad;
 
     public Detalle_Ventas(String No_nota, String Fecha, String CodigoProducto, 
-            String Cantidad, String PrecioC, String Subtotal) {
+            String Cantidad, String PrecioC, String Subtotal,String Nombre,String Unidad) {
         this.No_nota = new SimpleStringProperty(No_nota);
         this.Fecha = new SimpleStringProperty(Fecha);
         this.CodigoProducto = new SimpleStringProperty(CodigoProducto);
         this.Cantidad = new SimpleStringProperty(Cantidad);
         this.Subtotal = new SimpleStringProperty(Subtotal);
         this.PrecioC = new SimpleStringProperty(PrecioC);
+        this.Nombre = new SimpleStringProperty(Nombre);
+        this.Unidad = new SimpleStringProperty(Unidad);
     }
 
     public SimpleStringProperty getNo_nota() {
@@ -52,5 +56,11 @@ public class Detalle_Ventas {
 
     public SimpleStringProperty getPrecioC() {
         return(SimpleStringProperty) this.PrecioC;
+    }
+    public SimpleStringProperty getNombre() {
+        return(SimpleStringProperty) this.Nombre;
+    }
+    public SimpleStringProperty getUnidad() {
+        return(SimpleStringProperty) this.Unidad;
     }
 }

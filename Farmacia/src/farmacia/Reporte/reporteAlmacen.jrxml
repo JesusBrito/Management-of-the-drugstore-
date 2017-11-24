@@ -15,7 +15,7 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="44" y="31" width="172" height="20"/>
+				<reportElement x="16" y="25" width="172" height="20"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>

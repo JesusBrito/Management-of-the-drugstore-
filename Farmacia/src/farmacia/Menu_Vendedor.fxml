@@ -40,10 +40,11 @@
                             <TableColumn fx:id="colNota" prefWidth="79.0" text="No Nota" />
                             <TableColumn fx:id="colFecha" prefWidth="169.0" text="Fecha" />
                               <TableColumn fx:id="colCodigo" prefWidth="154.0" text="Codigo" />
-                              <TableColumn fx:id="colNombre" prefWidth="219.0" text="Nombre" />
-                              <TableColumn fx:id="colCantidad" prefWidth="137.0" text="Cantidad" />
-                              <TableColumn fx:id="colPrecio" prefWidth="170.0" text="Precio" />
-                              <TableColumn fx:id="colSubtotal" prefWidth="137.0" text="Subtotal" />
+                              <TableColumn fx:id="colNombre" prefWidth="144.0" text="Nombre" />
+                              <TableColumn fx:id="colUnidad" prefWidth="111.0" text="Unidad" />
+                              <TableColumn fx:id="colCantidad" prefWidth="180.0" text="Cantidad" />
+                              <TableColumn fx:id="colPrecio" prefWidth="121.0" text="Precio" />
+                              <TableColumn fx:id="colSubtotal" prefWidth="182.0" text="Subtotal" />
                           </columns>
                         </TableView>
                         <JFXComboBox fx:id="cmbRfc" disable="true" layoutX="303.0" layoutY="31.0" prefHeight="25.0" prefWidth="281.0" promptText="Rfc Cliente" />

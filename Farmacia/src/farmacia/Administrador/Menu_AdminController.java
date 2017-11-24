@@ -132,7 +132,7 @@ public class Menu_AdminController implements Initializable {
     
     @FXML
     public void btnCerrarSesionClicked(ActionEvent event) throws IOException{
-        Parent Alm = FXMLLoader.load(getClass().getResource("../Login.fxml"));
+        Parent Alm = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Stage stageAlm = (Stage)((Node)event.getSource()).getScene().getWindow();
         stageAlm.setTitle("Bienvenido");
         stageAlm.setScene(new Scene(Alm));    
@@ -184,7 +184,8 @@ public class Menu_AdminController implements Initializable {
         parametros.put("fechaF", fechaFin);
         parametros.put("fechaAct", fechaActual);
         JasperReport reporte;
-        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteVentas.jasper";
+        //String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteVentas.jasper";
+        String path="C:/Users/Perséfone/Documents/Reportes/reporteVentas.jasper";
         reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
         JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
         JasperViewer viewer = new JasperViewer(jprint,false);

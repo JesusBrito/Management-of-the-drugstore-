@@ -172,7 +172,8 @@ public class Menu_AlmacenController implements Initializable {
         HashMap parametros = new HashMap();
         parametros.put("FechaActual", fechaActual);
         JasperReport reporte;
-        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteAlmacen.jasper";
+        //String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteAlmacen.jasper";
+        String path="C:/Users/Perséfone/Documents/Reportes/reporteAlmacen.jasper";
         reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
         JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
         JasperViewer viewer = new JasperViewer(jprint,false);
@@ -197,7 +198,8 @@ public class Menu_AlmacenController implements Initializable {
         HashMap parametros = new HashMap();
         parametros.put("fechaAct", fechaActual);
         JasperReport reporte;
-        String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteNotaCompra.jasper";
+        //String path="/home/jesus/NetBeansProjects/Management-of-the-drugstore-/Farmacia/src/farmacia/Reporte/reporteNotaCompra.jasper";
+        String path="C:/Users/Perséfone/Documents/Reportes/reporteNotaCompra.jasper";
         reporte = (JasperReport) JRLoader.loadObjectFromLocation(path);
         JasperPrint jprint = JasperFillManager.fillReport(reporte,parametros, new JRBeanCollectionDataSource(lista));
         JasperViewer viewer = new JasperViewer(jprint,false);
