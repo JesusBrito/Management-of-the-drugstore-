@@ -50,37 +50,48 @@ public class AgregarProveedorController implements Initializable {
     
     public void btnRegistrarClicked(ActionEvent event) throws SQLException{
         String Query="";
-        rfc=txtRfc.getText();
-        empresa=txtEmpresa.getText();
-        paterno=(txtPaterno.getText().length()>0) ? txtPaterno.getText():"null";
-        materno=(txtMaterno.getText().length()>0) ? txtMaterno.getText():"null";
-        calle=txtCalle.getText();
-        colonia=txtColonia.getText();
-        numero=Integer.parseInt(txtNumero.getText());
-        ciudad=txtCiudad.getText();
-        delegacion=txtDelegacion.getText();
-        cp=Integer.parseInt(txtCp.getText());
-        telefono=(txtTelefono.getText().length()>0)? txtTelefono.getText() :"null";
-        nombre=txtNombre.getText();
         
-        if(rfc.equals("")){
+        if(!isNumeric(txtNumero.getText())||!isNumeric(txtCp.getText())){
+            System.out.println(isNumeric(txtNumero.getText())+"-"+isNumeric(txtCp.getText()));
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error");
+            alert2.setHeaderText("Campos llenados incorrectamente");
+            alert2.setContentText("Verifique que el Numero y código postal\n sean tipo numerico");
+            alert2.showAndWait();
+        }
+        else if(rfc.equals("")){
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
             alert2.setHeaderText("Campos llenados incorrectamente");
             alert2.setContentText("El RFC es un campo obligatorio");
             alert2.showAndWait();
-        }else if(empresa.equals("")|| nombre.equals("") || calle.equals("")||
-                colonia.equals("")|| ciudad.equals("")){
+        }else if(txtEmpresa.getText().equals("")|| txtNombre.getText().equals("") ||txtPaterno.getText().equals("") ||
+                txtCalle.getText().equals("")||txtMaterno.getText().equals("") ||
+                txtColonia.getText().equals("")|| txtCiudad.getText().equals("")|| txtTelefono.getText().equals("")||
+                txtDelegacion.getText().equals("")|| Integer.parseInt(txtNumero.getText())==0||
+                Integer.parseInt(txtCp.getText())==0){
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
             alert2.setHeaderText("Campos llenados incorrectamente");
-            alert2.setContentText("Todos los campos a excepcion de los apellidos y el telefono son obligatorios");
+            alert2.setContentText("Todos los campos son obligatorios");
             alert2.showAndWait();
             
         }else{
-            Query="Insert into ELENA.PROVEEDORES (RFC,NOMBRE_PROVEEDOR,AP_PATERNO,AP_MATERNO,CALLE,COLONIA,NUMERO,CIUDAD,DELEGACION,CP,TELEFONO_CONTACTO,NOMBRE_CONTACTO) "
-           +"values ('"+rfc+"','"+empresa+"','"+paterno+"','"+materno+"','"+calle+"','"+colonia+"',"+numero+",'"+ciudad+"','"+delegacion+"',"+cp+",'"+telefono+"','"+nombre+"')";
-           registrarBd(Query);   
+                rfc=txtRfc.getText();
+                empresa=txtEmpresa.getText();
+                paterno=(txtPaterno.getText().length()>0) ? txtPaterno.getText():"null";
+                materno=(txtMaterno.getText().length()>0) ? txtMaterno.getText():"null";
+                calle=txtCalle.getText();
+                colonia=txtColonia.getText();
+                numero=Integer.parseInt(txtNumero.getText());
+                ciudad=txtCiudad.getText();
+                delegacion=txtDelegacion.getText();
+                cp=Integer.parseInt(txtCp.getText());
+                telefono=(txtTelefono.getText().length()>0)? txtTelefono.getText() :"null";
+                nombre=txtNombre.getText();
+                Query="Insert into ELENA.PROVEEDORES (RFC,NOMBRE_PROVEEDOR,AP_PATERNO,AP_MATERNO,CALLE,COLONIA,NUMERO,CIUDAD,DELEGACION,CP,TELEFONO_CONTACTO,NOMBRE_CONTACTO) "
+                +"values ('"+rfc+"','"+empresa+"','"+paterno+"','"+materno+"','"+calle+"','"+colonia+"',"+numero+",'"+ciudad+"','"+delegacion+"',"+cp+",'"+telefono+"','"+nombre+"')";
+                registrarBd(Query);   
         }
     }
     
@@ -92,12 +103,13 @@ public class AgregarProveedorController implements Initializable {
         
         Bd db = new Bd();
         db.Conectar("administrador1", "12345");
-        if(db.InsertarClientes(Query)==true){
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setTitle("Registro exitoso");
-           alert.setHeaderText("Error en las fechas");
-           alert.setContentText("El proveedor "+empresa+" se ha registrado correctamente");
-           alert.showAndWait();        
+        if(db.InsertarClientes(Query)==true){ 
+           Notifications notificationsBuilderAlmacen = Notifications.create()
+            .title("Registro exitoso")           
+            .text("El proveedor "+empresa+" se ha registrado correctamente")
+            .hideAfter(Duration.seconds(4))
+            .position(Pos.TOP_RIGHT);
+            notificationsBuilderAlmacen.showInformation();       
         }else{
             Notifications notificationsBuilderAlmacen = Notifications.create()
             .title("Error al registrar el proveedor")           
@@ -130,5 +142,13 @@ public class AgregarProveedorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    } 
+        private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+    }
 }

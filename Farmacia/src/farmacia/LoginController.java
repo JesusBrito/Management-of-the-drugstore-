@@ -125,7 +125,7 @@ public class LoginController implements Initializable {
                     break;
            }            
        }else{
-           Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error al Iniciar sesión");
             alert.setContentText("Usuario y/o contraseña incorrectos");

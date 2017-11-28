@@ -2,14 +2,17 @@ package farmacia.Utilidades;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 
 public class Bd {
     private Connection conexion=null;
-    public Connection Conectar(String usuario, String contrasenia){
+    public Connection Conectar(String usuario, String contrasenia) throws SQLException, SQLRecoverableException{
         try
         {
             //Se carga el driver JDBC
-            DriverManager.registerDriver( new oracle.jdbc.driver.OracleDriver() );
+            DriverManager.registerDriver( new oracle.jdbc.driver.OracleDriver());
             //nombre del servidor
             //String nombre_servidor = "localhost";
             //String nombre_servidor ="192.168.43.69";
@@ -26,11 +29,21 @@ public class Bd {
             String password = contrasenia;
  
             //Obtiene la conexion
-            conexion = DriverManager.getConnection( url, user, password );
-        }catch( SQLException e ){
-            e.printStackTrace();
+            conexion = DriverManager.getConnection( url, user,  password );
+            return conexion;
         }
-        return conexion;
+        catch(SQLRecoverableException s){
+            s.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error al Iniciar sesión");
+            alert.setContentText("Servidor no encontrado");
+            alert.showAndWait();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Bd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     public String ConsultarUsuario() throws SQLException{
         String usuario="";

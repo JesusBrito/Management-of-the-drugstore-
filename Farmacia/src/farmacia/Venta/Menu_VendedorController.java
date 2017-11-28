@@ -143,7 +143,7 @@ public class Menu_VendedorController implements Initializable {
     String Codigo;
     String horaInicio = null;
     String horaFinal = null;
-    @FXML void btnRealizarCorteClicked(ActionEvent event) throws JRException{ 
+    @FXML void btnRealizarCorteClicked(ActionEvent event) throws JRException, SQLException{ 
         
 
 
@@ -453,7 +453,7 @@ public class Menu_VendedorController implements Initializable {
              alert2.showAndWait();    
         }
     }
-    private void corteDeCaja(String Query) throws JRException{
+    private void corteDeCaja(String Query) throws JRException, SQLException{
         Bd db = new Bd();
         db.Conectar(this.Usuario, this.Contrasenia);
         

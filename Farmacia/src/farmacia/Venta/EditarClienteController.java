@@ -6,7 +6,6 @@
 package farmacia.Venta;
 
 import com.jfoenix.controls.JFXTextField;
-import farmacia.Administrador.Proveedores;
 import farmacia.Utilidades.Bd;
 import java.net.URL;
 import java.sql.SQLException;
@@ -54,27 +53,38 @@ public class EditarClienteController implements Initializable {
     }
     @FXML
     public void btnActualizarClicked() throws SQLException{
-        rfc=txtRfc.getText();
-        nombre=txtNombre.getText();
-        paterno=(txtPaterno.getText().length()>0) ? txtPaterno.getText():"null";
-        materno=(txtMaterno.getText().length()>0) ? txtMaterno.getText():"null";
-        calle=txtCalle.getText();
-        colonia=txtColonia.getText();
-        numero=Integer.parseInt(txtNumero.getText());
-        ciudad=txtCiudad.getText();
-        delegacion=txtDelegacion.getText();
-        cp=Integer.parseInt(txtCp.getText());
-        correo=(txtCorreo.getText().length()>0)? txtCorreo.getText() :"null";
-                
-        if(nombre.equals("") || calle.equals("")||
-                colonia.equals("")|| ciudad.equals("")|| correo.equals("")){
+        
+        if(!isNumeric(txtNumero.getText())||!isNumeric(txtCp.getText())){
+            System.out.println(isNumeric(txtNumero.getText())+"-"+isNumeric(txtCp.getText()));
+            Alert alert1 = new Alert(Alert.AlertType.WARNING);
+            alert1.setTitle("Error");
+            alert1.setHeaderText("Campos llenados incorrectamente");
+            alert1.setContentText("Verifique que el Numero y código postal\n sean tipo numerico");
+            alert1.showAndWait();
+        }
+        else  if(txtNombre.getText().equals("") ||txtPaterno.getText().equals("") ||
+                txtCalle.getText().equals("")||txtMaterno.getText().equals("") ||
+                txtColonia.getText().equals("")|| txtCiudad.getText().equals("")||
+                txtDelegacion.getText().equals("")|| Integer.parseInt(txtNumero.getText())==0||
+                Integer.parseInt(txtCp.getText())==0||correo.equals("")){
             Alert alert2 = new Alert(Alert.AlertType.WARNING);
             alert2.setTitle("Error");
             alert2.setHeaderText("Campos llenados incorrectamente");
-            alert2.setContentText("Todos los campos a excepcion de los apellidos y el telefono son obligatorios");
+            alert2.setContentText("Todos los campos son obligatorios");
             alert2.showAndWait();
             
         }else{
+            rfc=txtRfc.getText();
+            nombre=txtNombre.getText();
+            paterno=(txtPaterno.getText().length()>0) ? txtPaterno.getText():"null";
+            materno=(txtMaterno.getText().length()>0) ? txtMaterno.getText():"null";
+            calle=txtCalle.getText();
+            colonia=txtColonia.getText();
+            numero=Integer.parseInt(txtNumero.getText());
+            ciudad=txtCiudad.getText();
+            delegacion=txtDelegacion.getText();
+            cp=Integer.parseInt(txtCp.getText());
+            correo=(txtCorreo.getText().length()>0)? txtCorreo.getText() :"null";
             Query="UPDATE ELENA.CLIENTES Set NOMBRE='"+nombre+"',AP_PATERNO='"+paterno+"',"
             + "AP_MATERNO='"+materno+"',CALLE='"+calle+"',COLONIA='"+colonia+"',NUMERO="+numero+","
             + "CIUDAD='"+ciudad+"',DELEGACION='"+delegacion+"',CP="+cp+",CORREO_ELECTRONICO='"+correo+"' "
@@ -128,5 +138,12 @@ public class EditarClienteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
+    private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+    }
 }
